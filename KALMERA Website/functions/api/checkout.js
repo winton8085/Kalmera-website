@@ -50,3 +50,4 @@ export async function onRequestPost(context) {
     return json({ error: (err && err.message) || "Checkout failed." }, 500);
   }
 }
+
