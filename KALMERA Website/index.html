@@ -93,9 +93,6 @@
   .shead h2 .sl { display: inline-block; }
   .shead .rule { flex: 1; height: 1px; background: var(--line); }
   .shead .cnt { font-size: 0.72rem; color: var(--muted); }
-</style>
-</head>
-<style>
   .releases { border-top: 1px solid var(--line); }
   .folder { border-bottom: 1px solid var(--line); }
   .folder-head { display: grid; grid-template-columns: 28px 1fr auto; gap: 16px; align-items: baseline; padding: 24px 6px; cursor: pointer; transition: background .3s, padding-left .3s var(--ease); }
@@ -142,23 +139,19 @@
   .timeline .trow .tdate { font-size: 0.8rem; color: var(--accent); font-weight: 600; }
   .timeline .trow .tbody h4 { font-size: clamp(1.1rem,2.6vw,1.7rem); font-weight: 600; letter-spacing: -0.01em; }
   .timeline .trow .tbody p { color: var(--muted); font-size: 0.9rem; margin-top: 6px; max-width: 46ch; }
-  .contact { text-align: center; padding: clamp(80px,14vh,200px) 0; position: relative; }
-  .contact .lead { font-size: 0.8rem; color: var(--muted); margin-bottom: 20px; }
-  .contact a.email { font-size: clamp(2rem,9vw,7rem); font-weight: 700; letter-spacing: -0.03em; display: inline-block; position: relative; padding: 0.12em 0; }
-  .contact a.email .u { display: block; overflow: visible; }
-  .contact a.email .u .el { display: inline-block; }
-  .contact a.email:hover { color: var(--accent); }
-  .contact a.yt-btn { display: inline-block; margin-top: 26px; font-size: clamp(1rem,2.4vw,1.7rem); font-weight: 700; letter-spacing: -0.02em; color: var(--red); position: relative; padding: 0.2em 0; }
-  .contact a.yt-btn .u { display: block; overflow: visible; }
-  .contact a.yt-btn .u .el { display: inline-block; }
-  .contact a.yt-btn:hover { color: #b81812; }
-  .contact .socials { display: flex; gap: 24px; justify-content: center; margin-top: 40px; font-size: 0.82rem; }
-  .contact .socials a { position: relative; }
-  .contact .socials a::after { content:""; position:absolute; left:0; bottom:-3px; width:0; height:1px; background: var(--ink); transition: width .3s var(--ease); }
-  .contact .socials a:hover::after { width: 100%; }
-  footer { padding: 40px 0 50px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.72rem; color: var(--muted); }
-  footer .fmark { font-family: "LOT","Helvetica Neue",Arial,sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); flex: 0 0 auto; }
-  .reveal { will-change: transform, opacity; }
+  .faq-list { border-top: 1px solid var(--line); }
+  .faq-item { border-bottom: 1px solid var(--line); }
+  .faq-q { display: flex; align-items: center; gap: 16px; padding: 22px 6px; cursor: pointer; transition: padding-left .3s var(--ease), background .3s; }
+  .faq-q:hover { background: rgba(27,70,224,0.04); padding-left: 16px; }
+  .faq-q .fq-plus { color: var(--accent); font-size: 1.1rem; flex: 0 0 auto; transition: transform .3s var(--ease); }
+  .faq-item.open .faq-q .fq-plus { transform: rotate(45deg); }
+  .faq-q .fq-txt { font-size: clamp(1rem,2.2vw,1.35rem); font-weight: 600; letter-spacing: -0.01em; }
+  .faq-a { overflow: hidden; height: 0; }
+  .faq-a .fa-inner { padding: 0 6px 24px 42px; color: var(--muted); font-size: 0.95rem; line-height: 1.7; max-width: 62ch; }
+  .faq-a .fa-inner strong { color: var(--ink-2); font-weight: 600; }
+</style>
+</head>
+<style>
   .po { position: fixed; inset: 0; z-index: 120; visibility: hidden; }
   .po.open { visibility: visible; }
   .po .po-bg { position: absolute; inset: 0; background: rgba(10,9,7,0.4); opacity: 0; transition: opacity .5s var(--ease); }
@@ -187,6 +180,33 @@
   .po .po-cta .u { display: block; overflow: visible; }
   .po .po-cta .u .el { display: inline-block; }
   .po .po-cta:hover { color: var(--accent-2); }
+  .po .po-sizeguide { margin-top: 24px; border-top: 1px solid var(--line); }
+  .po .po-sizeguide summary { padding: 16px 0; cursor: pointer; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); list-style: none; display: flex; align-items: center; gap: 8px; }
+  .po .po-sizeguide summary::-webkit-details-marker { display: none; }
+  .po .po-sizeguide summary::before { content: "+"; font-size: 1rem; }
+  .po .po-sizeguide[open] summary::before { content: "–"; }
+  .po .po-sizeguide table { width: 100%; border-collapse: collapse; margin-bottom: 18px; font-size: 0.82rem; }
+  .po .po-sizeguide th, .po .po-sizeguide td { text-align: left; padding: 9px 8px; border-bottom: 1px solid var(--line); }
+  .po .po-sizeguide th { color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.66rem; font-weight: 600; }
+  .po .po-sizeguide td:first-child { font-weight: 600; }
+  .po .po-sizeguide .sg-note { font-size: 0.72rem; color: var(--faint); padding: 0 8px 16px; }
+  .contact { text-align: center; padding: clamp(80px,14vh,200px) 0; position: relative; }
+  .contact .lead { font-size: 0.8rem; color: var(--muted); margin-bottom: 20px; }
+  .contact a.email { font-size: clamp(2rem,9vw,7rem); font-weight: 700; letter-spacing: -0.03em; display: inline-block; position: relative; padding: 0.12em 0; }
+  .contact a.email .u { display: block; overflow: visible; }
+  .contact a.email .u .el { display: inline-block; }
+  .contact a.email:hover { color: var(--accent); }
+  .contact a.yt-btn { display: inline-block; margin-top: 26px; font-size: clamp(1rem,2.4vw,1.7rem); font-weight: 700; letter-spacing: -0.02em; color: var(--red); position: relative; padding: 0.2em 0; }
+  .contact a.yt-btn .u { display: block; overflow: visible; }
+  .contact a.yt-btn .u .el { display: inline-block; }
+  .contact a.yt-btn:hover { color: #b81812; }
+  .contact .socials { display: flex; gap: 24px; justify-content: center; margin-top: 40px; font-size: 0.82rem; }
+  .contact .socials a { position: relative; }
+  .contact .socials a::after { content:""; position:absolute; left:0; bottom:-3px; width:0; height:1px; background: var(--ink); transition: width .3s var(--ease); }
+  .contact .socials a:hover::after { width: 100%; }
+  footer { padding: 40px 0 50px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.72rem; color: var(--muted); }
+  footer .fmark { font-family: "LOT","Helvetica Neue",Arial,sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); flex: 0 0 auto; }
+  .reveal { will-change: transform, opacity; }
   .co { position: fixed; inset: 0; z-index: 130; visibility: hidden; }
   .co.open { visibility: visible; }
   .co .co-bg { position: absolute; inset: 0; background: rgba(10,9,7,0.5); opacity: 0; transition: opacity .5s var(--ease); }
@@ -219,18 +239,26 @@
   .co .co-field input, .co .co-field select { width: 100%; background: var(--paper-2); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; font-family: inherit; font-size: 0.92rem; color: var(--ink); transition: border-color .2s, background .2s; }
   .co .co-field input:focus, .co .co-field select:focus { outline: none; border-color: var(--accent); background: var(--paper); }
   .co .co-field input::placeholder { color: var(--faint); }
-  .co .co-qty { display: flex; align-items: center; gap: 0; border: 1px solid var(--line); border-radius: 5px; width: fit-content; overflow: hidden; }
-  .co .co-qty button { width: 30px; height: 32px; background: var(--paper-2); border: none; font-family: inherit; font-size: 0.95rem; color: var(--ink); cursor: pointer; transition: background .2s; }
-  .co .co-qty button:hover { background: var(--line); }
-  .co .co-qty .qv { width: 32px; text-align: center; font-weight: 600; font-size: 0.82rem; }
   .co .co-card-slot { background: var(--paper-2); border: 1px dashed var(--line); border-radius: 6px; padding: 16px 14px; font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 10px; }
   .co .co-card-slot .lock { color: var(--accent); }
+  .co .co-ship { display: flex; flex-direction: column; gap: 10px; }
+  .co .co-ship .ship-opt { display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; transition: border-color .2s, background .2s; }
+  .co .co-ship .ship-opt:hover { border-color: var(--accent); }
+  .co .co-ship .ship-opt.sel { border-color: var(--accent); background: rgba(27,70,224,0.05); }
+  .co .co-ship .ship-opt .dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--line); flex: 0 0 auto; transition: border-color .2s, background .2s; }
+  .co .co-ship .ship-opt.sel .dot { border-color: var(--accent); background: var(--accent); box-shadow: inset 0 0 0 3px var(--paper); }
+  .co .co-ship .ship-opt .s-main { flex: 1; }
+  .co .co-ship .ship-opt .s-name { font-weight: 600; font-size: 0.9rem; }
+  .co .co-ship .ship-opt .s-time { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+  .co .co-ship .ship-opt .s-price { font-weight: 700; font-size: 0.92rem; }
+  .co .co-ship .ship-opt .s-price.free { color: var(--accent); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.1em; }
   .co .co-totals { margin-top: 26px; border-top: 1px solid var(--line); padding-top: 18px; }
   .co .co-totals .tr { display: flex; justify-content: space-between; font-size: 0.86rem; padding: 6px 0; color: var(--ink-2); }
   .co .co-totals .tr.grand { font-size: 1.15rem; font-weight: 700; color: var(--ink); border-top: 1px solid var(--line); margin-top: 8px; padding-top: 14px; }
   .co .co-totals .tr .free { color: var(--accent); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.1em; }
   .co .co-pay { margin-top: 24px; width: 100%; padding: 18px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-family: inherit; font-size: 1.05rem; font-weight: 700; letter-spacing: 0.01em; cursor: pointer; transition: background .25s, transform .15s; }
   .co .co-pay:hover { background: var(--accent-2); }
+  .co .co-pay:disabled { opacity: 0.6; cursor: default; }
   .co .co-pay:active { transform: scale(0.99); }
   .co .co-note { margin-top: 14px; font-size: 0.72rem; color: var(--muted); line-height: 1.5; text-align: center; }
   .co .co-secure { margin-top: 18px; font-size: 0.66rem; color: var(--faint); text-align: center; letter-spacing: 0.06em; }
@@ -252,6 +280,7 @@
       <div class="n-links">
         <a href="#recognitions" data-scramble>Releases</a>
         <a href="#timeline" data-scramble>Timeline</a>
+        <a href="#faq" data-scramble>FAQ</a>
         <a href="#contact" data-scramble>Contact</a>
       </div>
       <button class="sound-btn mono" id="soundBtn" aria-pressed="false" aria-label="Toggle ambient sound">
@@ -338,6 +367,36 @@
       </div>
     </section>
 
+    <section class="block wrap" id="faq">
+      <div class="shead reveal"><span class="idx mono">[03]</span><h2 data-split-h>Questions</h2><span class="rule"></span><span class="cnt mono">Good to know</span></div>
+      <div class="faq-list">
+        <div class="faq-item" data-faq>
+          <div class="faq-q"><span class="fq-plus mono">+</span><span class="fq-txt">How long will my order take?</span></div>
+          <div class="faq-a"><div class="fa-inner">Every piece is <strong>made to order</strong> — printed by hand once you buy, so nothing is wasted. Production takes a few days, then shipping. <strong>Standard delivery is free and takes around 30 days worldwide; Express (~10 days) is available at checkout.</strong> You'll get a tracking number once it ships.</div></div>
+        </div>
+        <div class="faq-item" data-faq>
+          <div class="faq-q"><span class="fq-plus mono">+</span><span class="fq-txt">Why is it made to order?</span></div>
+          <div class="faq-a"><div class="fa-inner">Because it's the KALMERA way — <strong>the fewest, best pieces, nothing wasted.</strong> Making each piece only when it's ordered means no overproduction, no landfill, no dead stock. The trade-off is a short wait; the upside is a piece made for you.</div></div>
+        </div>
+        <div class="faq-item" data-faq>
+          <div class="faq-q"><span class="fq-plus mono">+</span><span class="fq-txt">What sizing should I choose?</span></div>
+          <div class="faq-a"><div class="fa-inner">The pieces are cut <strong>oversized / boxy</strong> by design. If you want a true oversized look, take your normal size; if you prefer a closer fit, size down. A full size guide with measurements is on each product.</div></div>
+        </div>
+        <div class="faq-item" data-faq>
+          <div class="faq-q"><span class="fq-plus mono">+</span><span class="fq-txt">Do you ship worldwide?</span></div>
+          <div class="faq-a"><div class="fa-inner"><strong>Yes — worldwide.</strong> Standard shipping is free everywhere. Delivery times vary a little by country; you'll see the estimate and a tracking number after ordering.</div></div>
+        </div>
+        <div class="faq-item" data-faq>
+          <div class="faq-q"><span class="fq-plus mono">+</span><span class="fq-txt">Returns &amp; exchanges</span></div>
+          <div class="faq-a"><div class="fa-inner">As each piece is <strong>made to order</strong>, we can't accept general change-of-mind returns. But if your item arrives <strong>faulty, damaged, or the wrong item/size</strong>, email us within 7 days at <strong>kalmera.team@gmail.com</strong> with a photo and we'll put it right. Check the size guide before ordering to get the fit right first time.</div></div>
+        </div>
+        <div class="faq-item" data-faq>
+          <div class="faq-q"><span class="fq-plus mono">+</span><span class="fq-txt">How do I get in touch?</span></div>
+          <div class="faq-a"><div class="fa-inner">Email <strong>kalmera.team@gmail.com</strong> for anything — orders, sizing, or just to say hello. We read every message.</div></div>
+        </div>
+      </div>
+    </section>
+
     <section class="contact wrap" id="contact">
       <div class="lead mono reveal">Let's dress the new era</div>
       <a class="email" href="mailto:kalmera.team@gmail.com?subject=Join%20the%20list&body=Add%20me%20to%20the%20KALMERA%20list%20%E2%80%94%20I%20want%20to%20hear%20when%20Drop%2001%20lands." data-cursor="visit"><span class="u" data-email>join the list</span></a>
@@ -367,6 +426,8 @@
         <div class="po-gallery" id="poGallery"></div>
         <div class="po-desc" id="poDesc"></div>
         <div class="po-specs" id="poSpecs"></div>
+        <details class="po-sizeguide" id="poSizeGuide"><summary>Size guide</summary><div id="poSizeBody"></div></details>
+        <div class="po-delivery mono" id="poDelivery" style="margin-top:20px;font-size:0.78rem;color:var(--muted);line-height:1.6;">Made to order · Free standard shipping (~30 days) or Express (~10 days) at checkout.</div>
         <a class="po-cta" id="poCta" href="mailto:kalmera.team@gmail.com?subject=Reserve%20a%20piece"><span class="u" data-cta>reserve yours →</span></a>
         <button class="co-pay" id="poBuy" style="margin-top:18px;max-width:280px">Add to basket +</button>
       </div>
@@ -382,19 +443,28 @@
         <div id="coItems"></div>
         <div class="co-empty mono" id="coEmpty">Your basket is empty.</div>
         <div class="co-form" id="coForm">
-          <div class="co-field"><label>Full name</label><input type="text" id="coFullname" placeholder="Your name" autocomplete="name" /></div>
-          <div class="co-field"><label>Email</label><input type="email" id="coEmail" placeholder="you@email.com" autocomplete="email" /></div>
-          <div class="co-field"><label>Shipping address</label><input type="text" id="coAddr" placeholder="Street address" autocomplete="street-address" /></div>
-          <div class="co-row">
-            <div class="co-field"><label>City</label><input type="text" id="coCity" placeholder="City" autocomplete="address-level2" /></div>
-            <div class="co-field"><label>Postcode</label><input type="text" id="coPost" placeholder="Postcode" autocomplete="postal-code" /></div>
+          <div class="co-field">
+            <label>Delivery</label>
+            <div class="co-ship" id="coShip">
+              <div class="ship-opt sel" data-ship="Standard" data-cost="0">
+                <span class="dot"></span>
+                <span class="s-main"><span class="s-name">Standard</span><span class="s-time">Made to order · ~30 days</span></span>
+                <span class="s-price free">Free</span>
+              </div>
+              <div class="ship-opt" data-ship="Express" data-cost="10.99">
+                <span class="dot"></span>
+                <span class="s-main"><span class="s-name">Express</span><span class="s-time">Made to order · ~10 days</span></span>
+                <span class="s-price">+£10.99</span>
+              </div>
+            </div>
           </div>
-          <div class="co-field"><label>Country</label><input type="text" id="coCountry" placeholder="Country" autocomplete="country-name" /></div>
-          <div class="co-field"><label>Card details</label><div class="co-card-slot"><span class="lock">🔒</span> Secure card payment — added once Stripe is connected.</div></div>
+          <div class="co-field">
+            <div class="co-card-slot"><span class="lock">🔒</span> Your name, address &amp; card are entered securely on the next step, handled by Stripe. KALMERA never sees your card details.</div>
+          </div>
         </div>
         <div class="co-totals" id="coTotals">
           <div class="tr"><span>Subtotal</span><span id="coSubtotal">—</span></div>
-          <div class="tr"><span>Shipping</span><span class="free">Free · worldwide</span></div>
+          <div class="tr"><span>Shipping</span><span id="coShipLine" class="free">Free · Standard</span></div>
           <div class="tr grand"><span>Total</span><span id="coTotal">—</span></div>
         </div>
         <button class="co-pay" id="coPay">Pay —</button>
@@ -403,7 +473,7 @@
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -555,7 +625,7 @@
           smears.forEach((s, i) => { s.x += (px - s.x)*0.35; s.y += (py - s.y)*0.35; s.el.style.transform = `translate(${s.x}px,${s.y}px) translate(-50%,-50%)`; s.el.style.opacity = Math.max(0, 0.4 - i*0.08); px = s.x; py = s.y; });
           requestAnimationFrame(loopC);
         })();
-        document.querySelectorAll("a, .rel-item, [data-cursor], button, [data-po-close], [data-co-close], .folder-head, .subfolder-head").forEach(el => {
+        document.querySelectorAll("a, .rel-item, [data-cursor], button, [data-po-close], [data-co-close], .folder-head, .subfolder-head, .faq-q").forEach(el => {
           el.addEventListener("mouseenter", () => { ring.classList.add("big"); Sound.tick(); });
           el.addEventListener("mouseleave", () => ring.classList.remove("big"));
         });
@@ -602,6 +672,17 @@
         });
         gsap.utils.toArray(".releases > .folder").forEach(f => gsap.fromTo(f, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", scrollTrigger: { trigger: f, start: "top 90%", onStart: () => Sound.rowTap() } }));
 
+        gsap.utils.toArray("[data-faq]").forEach(item => {
+          const q = item.querySelector(".faq-q"); const a = item.querySelector(".faq-a");
+          gsap.set(a, { height: 0 });
+          q.addEventListener("click", () => {
+            const opening = !item.classList.contains("open");
+            item.classList.toggle("open", opening);
+            gsap.to(a, { height: opening ? "auto" : 0, duration: 0.45, ease: "power3.inOut", onComplete: () => { if (window.ScrollTrigger) ScrollTrigger.refresh(true); } });
+            Sound.rowTap();
+          });
+        });
+
         const tl = document.getElementById("tl"), tfill = document.getElementById("tfill"), trows = gsap.utils.toArray(".timeline .trow");
         if (tl && tfill) {
           ScrollTrigger.create({ trigger: tl, start: "top 70%", end: "bottom 75%", scrub: 0.5, onUpdate: self => { tfill.style.height = (self.progress * 100) + "%"; const passed = Math.round(self.progress * trows.length + 0.2); trows.forEach((r, i) => r.classList.toggle("on", i < passed)); } });
@@ -639,6 +720,8 @@
         const ab = document.querySelector(".about [data-words]"); if (ab) gsap.set(ab, { opacity: 1 });
         document.querySelectorAll("[data-count]").forEach(el => el.textContent = el.getAttribute("data-count"));
         document.querySelectorAll(".timeline .trow").forEach(r => r.classList.add("on"));
+        document.querySelectorAll("[data-faq]").forEach(f => f.classList.add("open"));
+        gsap.set(".faq-a", { height: "auto" });
       }
 
       if (!reduce) document.querySelectorAll("[data-scramble]").forEach((el, i) => setTimeout(() => scramble(el), 2600 + i * 150));
@@ -657,7 +740,7 @@
           el.addEventListener("mouseleave", () => gsap.to(el, { x:0, y:0, duration:0.6, ease:"elastic.out(1,0.4)" }));
         });
       }
-      document.querySelectorAll("a, button, .rel-item, .folder-head, .subfolder-head").forEach(el => el.addEventListener("click", () => { Sound.unlock(); Sound.click(); }));
+      document.querySelectorAll("a, button, .rel-item, .folder-head, .subfolder-head, .faq-q").forEach(el => el.addEventListener("click", () => { Sound.unlock(); Sound.click(); }));
 
       const PRODUCTS = {
         "karbon-hoodie": { num: "KARBON / 01", title: "Mass", sub: "Hoodie · KARBON — The Anchor · Drop 01", color: "#1a1712", hero: "KARBON MASS", gallery: ["Front","Back","Detail","Hood"], images: ["images/karbon-mass-hero.png","images/karbon-mass-1.png","images/karbon-mass-2.png","images/karbon-mass-3.png"], desc: ["The anchor of the drop. Built on a 500 g/m² heavyweight fleece — dense, structured, and substantial in the hand. Made to hold its shape and be worn for years, not seasons.","Oversized fit, plush brushed interior, clean considered exterior. The KALMERA mark sits centred on the chest, printed to order. Made when you order it, shipped worldwide — nothing wasted."], specs: [["Weight","500 g/m² · 14.7 oz"],["Fabric","Heavyweight fleece"],["Fit","Oversized"],["Mark","Centre chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£50 · free shipping"],["Drop","01 — Oct 2026"]] },
@@ -668,10 +751,18 @@
         "kloud-sweatpants": { num: "KLOUD / 03", title: "Drift", sub: "Sweatpants · KLOUD — The Counterpoint · Drop 01", color: "#8a8175", hero: "KLOUD DRIFT", gallery: ["Front","Back","Detail","Waistband"], images: null, desc: ["The match to the KLOUD hoodie. Heavyweight 420 g/m² straight-leg sweatpants in the lighter register — the full KLOUD set, head to toe.","The KALMERA mark runs vertically down the lower leg, printed to order. Shipped worldwide."], specs: [["Weight","420 g/m² · 12.4 oz"],["Fabric","Heavyweight"],["Fit","Straight leg"],["Mark","Vertical, lower leg"],["Sizes","S–XL"],["Made","To order · ships worldwide"],["Price","£40 · free shipping"],["Drop","01 — Oct 2026"]] }
       };
 
+      const SIZE_GUIDES = {
+        hoodie: { cols: ["Size","Chest (cm)","Length (cm)","Sleeve (cm)"], rows: [["S","110","68","60"],["M","116","70","61"],["L","122","72","62"],["XL","128","74","63"],["2XL","134","76","64"]], note: "Oversized fit. Garment measurements, laid flat. Placeholder — confirm against Tapstitch RW0035." },
+        tee: { cols: ["Size","Chest (cm)","Length (cm)"], rows: [["S","106","70"],["M","112","72"],["L","118","74"],["XL","124","76"],["2XL","130","78"]], note: "Boxy oversized fit. Garment measurements, laid flat. Placeholder — confirm against Tapstitch RT0080." },
+        sweatpants: { cols: ["Size","Waist (cm)","Inseam (cm)","Length (cm)"], rows: [["S","68","74","98"],["M","72","75","100"],["L","76","76","102"],["XL","80","77","104"]], note: "Straight-leg fit. Garment measurements, laid flat. Placeholder — confirm against Tapstitch RK0009." }
+      };
+      const garmentOf = (key) => key.includes("hoodie") ? "hoodie" : key.includes("tee") ? "tee" : "sweatpants";
+
       const po = document.getElementById("po");
       const poNum = document.getElementById("poNum"), poTitle = document.getElementById("poTitle"), poSub = document.getElementById("poSub");
       const poHero = document.getElementById("poHero"), poHeroLabel = document.getElementById("poHeroLabel");
       const poGallery = document.getElementById("poGallery"), poDesc = document.getElementById("poDesc"), poSpecs = document.getElementById("poSpecs");
+      const poSizeBody = document.getElementById("poSizeBody");
       const poCta = document.getElementById("poCta");
       const panel = po.querySelector(".po-panel");
       let currentKey = null;
@@ -693,22 +784,25 @@
         gsap.utils.toArray(poGallery.children).forEach((cell, i) => { const src = imgs[i + 1]; if (!src) return; const im = new Image(); im.src = src; im.alt = `${d.hero} — ${d.gallery[i]}`; im.onerror = () => im.remove(); cell.insertBefore(im, cell.firstChild); });
         poDesc.innerHTML = d.desc.map(p => `<p>${p}</p>`).join("");
         poSpecs.innerHTML = d.specs.map(s => `<div class="sr"><span>${s[0]}</span><b>${s[1]}</b></div>`).join("");
+        const sg = SIZE_GUIDES[garmentOf(key)];
+        if (sg) { poSizeBody.innerHTML = `<table><thead><tr>${sg.cols.map(c => `<th>${c}</th>`).join("")}</tr></thead><tbody>${sg.rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table><div class="sg-note">${sg.note}</div>`; }
         po.classList.add("open"); po.setAttribute("aria-hidden", "false");
         document.body.classList.add("locked"); scrollPaused = true; panel.scrollTop = 0; Sound.open();
         if (!reduce) { const items = panel.querySelectorAll(".po-num, .po-title, .po-sub, .po-hero, .po-gallery, .po-desc, .po-specs, .po-cta"); gsap.fromTo(items, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.06, delay: 0.25 }); }
       }
       function closeProduct() { po.classList.remove("open"); po.setAttribute("aria-hidden", "true"); document.body.classList.remove("locked"); scrollPaused = false; if (window.__syncScroll) window.__syncScroll(); }
-
       document.querySelectorAll(".rel-item[data-product]").forEach(item => { item.addEventListener("click", (e) => { e.stopPropagation(); openProduct(item.getAttribute("data-product")); }); });
       document.querySelectorAll("[data-po-close]").forEach(el => el.addEventListener("click", closeProduct));
 
-      /* ---------- BASKET + CHECKOUT ---------- */
+      /* ---------- BASKET + CHECKOUT (Stripe) ---------- */
       const co = document.getElementById("co");
       const coPanel = co.querySelector(".co-panel");
       const coItems = document.getElementById("coItems");
       const coSubtotal = document.getElementById("coSubtotal"), coTotal = document.getElementById("coTotal"), coPay = document.getElementById("coPay");
+      const coShip = document.getElementById("coShip"), coShipLine = document.getElementById("coShipLine");
       const cartBtn = document.getElementById("cartBtn"), cartCount = document.getElementById("cartCount");
       let basket = [];
+      let shipMethod = "Standard", shipCost = 0;
       const specValue = (d, label) => { const row = d.specs.find(s => s[0] === label); return row ? row[1] : ""; };
       const parsePrice = (str) => { const m = String(str).match(/£\s*([\d.]+)/); return m ? parseFloat(m[1]) : 0; };
       const SIZE_ORDER = ["XS","S","M","L","XL","2XL","3XL"];
@@ -725,9 +819,15 @@
           return `<div class="co-item">${thumb}<div><div class="co-nm">${d.title} — ${d.sub.split(" · ")[0]}</div><div class="co-meta mono">${d.num}</div><div class="co-controls"><select data-size="${idx}">${sizeOpts}</select><div class="co-qty"><button type="button" data-minus="${idx}">−</button><span class="qv mono">${it.qty}</span><button type="button" data-plus="${idx}">+</button></div><button class="co-remove" data-remove="${idx}">Remove</button></div></div><div class="co-price">${money(unitPrice(it.key) * it.qty)}</div></div>`;
         }).join("");
         const sub = basket.reduce((s, i) => s + unitPrice(i.key) * i.qty, 0);
-        coSubtotal.textContent = money(sub); coTotal.textContent = money(sub); coPay.textContent = "Pay " + money(sub);
+        const grand = sub + shipCost;
+        coSubtotal.textContent = money(sub);
+        coShipLine.textContent = shipCost > 0 ? money(shipCost) + " · Express" : "Free · Standard";
+        coShipLine.className = shipCost > 0 ? "" : "free";
+        coTotal.textContent = money(grand);
+        coPay.textContent = "Pay " + money(grand);
         updateCartBadge();
       }
+      coShip.addEventListener("click", (e) => { const opt = e.target.closest(".ship-opt"); if (!opt) return; coShip.querySelectorAll(".ship-opt").forEach(o => o.classList.remove("sel")); opt.classList.add("sel"); shipMethod = opt.dataset.ship; shipCost = parseFloat(opt.dataset.cost) || 0; renderBasket(); Sound.rowTap(); });
       coItems.addEventListener("click", (e) => { const t = e.target; if (t.dataset.plus != null) { basket[+t.dataset.plus].qty = Math.min(10, basket[+t.dataset.plus].qty + 1); renderBasket(); Sound.rowTap(); } else if (t.dataset.minus != null) { const i = +t.dataset.minus; basket[i].qty = Math.max(1, basket[i].qty - 1); renderBasket(); Sound.rowTap(); } else if (t.dataset.remove != null) { basket.splice(+t.dataset.remove, 1); renderBasket(); Sound.rowTap(); } });
       coItems.addEventListener("change", (e) => { if (e.target.dataset.size != null) { basket[+e.target.dataset.size].size = e.target.value; } });
       function addToBasket(key) { const d = PRODUCTS[key]; if (!d) return; const defaultSize = expandSizes(specValue(d, "Sizes"))[0]; const existing = basket.find(i => i.key === key && i.size === defaultSize); if (existing) existing.qty = Math.min(10, existing.qty + 1); else basket.push({ key, size: defaultSize, qty: 1 }); renderBasket(); Sound.open(); }
@@ -735,7 +835,25 @@
       function closeCheckout() { co.classList.remove("open"); co.setAttribute("aria-hidden", "true"); document.body.classList.remove("locked"); scrollPaused = false; if (window.__syncScroll) window.__syncScroll(); }
       document.getElementById("poBuy").addEventListener("click", () => { if (!currentKey) return; addToBasket(currentKey); closeProduct(); openCheckout(); });
       cartBtn.addEventListener("click", openCheckout);
-      coPay.addEventListener("click", () => { Sound.click(); alert("Payments go live once Stripe is connected. This is the basket + checkout preview — items, sizes, quantities and totals are all wired up and ready."); });
+
+      // Pay → create a Stripe Checkout session via the Netlify function, then redirect.
+      coPay.addEventListener("click", async () => {
+        if (basket.length === 0) return;
+        Sound.click();
+        const original = coPay.textContent;
+        coPay.disabled = true;
+        coPay.textContent = "Taking you to secure checkout…";
+        try {
+          const res = await fetch("/.netlify/functions/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ basket, shipMethod }) });
+          const data = await res.json();
+          if (data.url) { window.location = data.url; }
+          else { throw new Error(data.error || "Checkout failed."); }
+        } catch (err) {
+          coPay.disabled = false; coPay.textContent = original;
+          alert("Sorry — something went wrong starting checkout. Please try again, or email kalmera.team@gmail.com.");
+        }
+      });
+
       document.querySelectorAll("[data-co-close]").forEach(el => el.addEventListener("click", closeCheckout));
       document.addEventListener("keydown", e => { if (e.key === "Escape") { closeProduct(); closeCheckout(); } });
       updateCartBadge();
