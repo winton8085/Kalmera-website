@@ -18,43 +18,78 @@
 <meta name="twitter:image" content="images/karbon-mass-hero.png" />
 <meta name="theme-color" content="#f3f0ea" />
 
+<!-- Favicon: KALMERA mark (blue K on cream) -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f3f0ea'/%3E%3Ctext x='50' y='72' font-family='Helvetica,Arial,sans-serif' font-size='68' font-weight='700' text-anchor='middle' fill='%231b46e0'%3EK%3C/text%3E%3C/svg%3E" />
 <style>
-  @font-face { font-family: "LOT"; src: url("fonts/LOT.otf") format("opentype"); font-weight: normal; font-display: swap; }
+  /* KALMERA wordmark font — drop LOT.otf into a "fonts" folder next to this file */
+  @font-face {
+    font-family: "LOT";
+    src: url("fonts/LOT.otf") format("opentype");
+    font-weight: normal;
+    font-display: swap;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   ::selection { background: #1b46e0; color: #fff; }
+
   :root {
-    --paper: #f3f0ea; --paper-2: #eae6dd; --ink: #16130f; --ink-2: #3a352d; --muted: #8a8175;
-    --faint: #b3a99a; --line: #d9d3c7; --accent: #1b46e0; --accent-2: #0f2fae; --red: #e5231d;
-    --maxw: 1400px; --ease: cubic-bezier(.19,1,.22,1);
+    --paper: #f3f0ea;
+    --paper-2: #eae6dd;
+    --ink: #16130f;
+    --ink-2: #3a352d;
+    --muted: #8a8175;
+    --faint: #b3a99a;
+    --line: #d9d3c7;
+    --accent: #1b46e0;
+    --accent-2: #0f2fae;
+    --red: #e5231d;
+    --maxw: 1400px;
+    --ease: cubic-bezier(.19,1,.22,1);
   }
+
   html { scroll-behavior: auto; background: var(--paper); }
-  body { background: var(--paper); color: var(--ink); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; overflow-x: hidden; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    overflow-x: hidden; min-height: 100vh; -webkit-font-smoothing: antialiased;
+  }
   body.locked { overflow: hidden; }
   .mono { font-family: "SF Mono","JetBrains Mono",ui-monospace,monospace; letter-spacing: 0.02em; }
+  .up { text-transform: uppercase; letter-spacing: 0.12em; }
   .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(20px,4vw,60px); }
   a { color: inherit; text-decoration: none; }
+
   .grain { position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: 0.04; mix-blend-mode: multiply;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
-  .orbit { position: fixed; top: 0; left: 0; width: 220px; height: 220px; border-radius: 50%; z-index: 0; pointer-events: none; background: radial-gradient(circle, rgba(27,70,224,0.18), transparent 65%); filter: blur(6px); transform: translate(-50%,-50%); mix-blend-mode: multiply; }
-  .cursor { position: fixed; top: 0; left: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); pointer-events: none; z-index: 90; mix-blend-mode: difference; transform: translate(-50%,-50%); }
-  .cursor-ring { position: fixed; top: 0; left: 0; width: 42px; height: 42px; border: 1px solid var(--ink); border-radius: 50%; pointer-events: none; z-index: 89; transform: translate(-50%,-50%); transition: width .25s var(--ease), height .25s var(--ease), background .25s, border-color .25s; }
+
+  .orbit { position: fixed; top: 0; left: 0; width: 220px; height: 220px; border-radius: 50%; z-index: 0; pointer-events: none;
+    background: radial-gradient(circle, rgba(27,70,224,0.18), transparent 65%); filter: blur(6px); transform: translate(-50%,-50%); mix-blend-mode: multiply; }
+
+  .cursor { position: fixed; top: 0; left: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--accent);
+    pointer-events: none; z-index: 90; mix-blend-mode: difference; transform: translate(-50%,-50%); }
+  .cursor-ring { position: fixed; top: 0; left: 0; width: 42px; height: 42px; border: 1px solid var(--ink); border-radius: 50%;
+    pointer-events: none; z-index: 89; transform: translate(-50%,-50%); transition: width .25s var(--ease), height .25s var(--ease), background .25s, border-color .25s; }
   .cursor-ring.big { width: 90px; height: 90px; background: rgba(27,70,224,0.1); border-color: var(--accent); }
   .cursor-ring .lbl { position: absolute; inset: 0; display: grid; place-items: center; font-size: 0.5rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); opacity: 0; transition: opacity .2s; }
   .cursor-ring.big .lbl { opacity: 1; }
   .smear { position: fixed; top: 0; left: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); opacity: 0; pointer-events: none; z-index: 88; transform: translate(-50%,-50%); mix-blend-mode: difference; }
   @media (hover: none) { .cursor, .cursor-ring, .smear, .orbit { display: none; } }
+
   .loader { position: fixed; inset: 0; z-index: 100; background: var(--ink); color: var(--paper); display: grid; place-items: center; overflow: hidden; }
   .loader .num { font-size: clamp(4rem,18vw,16rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
   .loader .bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--accent); width: 0; }
+
   main { position: relative; z-index: 1; }
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 22px clamp(20px,4vw,60px); }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between;
+    padding: 22px clamp(20px,4vw,60px); }
   nav .n-l { display: flex; align-items: center; color: var(--ink); }
-  nav .n-l .wordmark { font-family: "LOT", "Helvetica Neue", Arial, sans-serif; font-size: 1.6rem; font-weight: 700; letter-spacing: 0.06em; line-height: 1; text-transform: uppercase; transition: transform .3s var(--ease); display: block; }
+  nav .n-l .wordmark { font-family: "LOT", "Helvetica Neue", Arial, sans-serif; font-size: 1.6rem; font-weight: 700;
+    letter-spacing: 0.06em; line-height: 1; text-transform: uppercase; transition: transform .3s var(--ease); display: block; }
   nav .n-l:hover .wordmark { transform: scale(1.04); }
   nav .n-right { display: flex; align-items: center; gap: 26px; }
   nav .n-links { display: flex; gap: 26px; font-size: 0.8rem; }
   nav .n-links a { position: relative; }
+  nav .n-links a .cnt { font-size: 0.6rem; vertical-align: super; color: var(--accent); }
   nav .n-links a::after { content: ""; position: absolute; left: 0; bottom: -3px; width: 0; height: 1px; background: var(--ink); transition: width .3s var(--ease); }
   nav .n-links a:hover::after { width: 100%; }
   .sound-btn { display: flex; align-items: center; gap: 9px; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink); cursor: pointer; background: none; border: none; font-family: inherit; }
@@ -65,27 +100,36 @@
   .sound-btn .lbl-off { display: inline; } .sound-btn .lbl-on { display: none; }
   .sound-btn.on .lbl-off { display: none; } .sound-btn.on .lbl-on { display: inline; }
   @keyframes sb { 0%,100%{ height: 3px; } 50%{ height: 14px; } }
-  .cart-btn { position: relative; display: flex; align-items: center; gap: 7px; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink); cursor: pointer; background: none; border: none; font-family: inherit; }
+
+  /* cart icon in nav */
+  .cart-btn { position: relative; display: flex; align-items: center; gap: 7px; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--ink); cursor: pointer; background: none; border: none; font-family: inherit; }
   .cart-btn .cart-ico { font-size: 1rem; line-height: 1; }
-  .cart-btn .cart-count { position: absolute; top: -8px; right: -12px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px; background: var(--accent); color: #fff; font-size: 0.6rem; font-weight: 700; display: none; align-items: center; justify-content: center; letter-spacing: 0; }
+  .cart-btn .cart-count { position: absolute; top: -8px; right: -12px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px;
+    background: var(--accent); color: #fff; font-size: 0.6rem; font-weight: 700; display: none; align-items: center; justify-content: center; letter-spacing: 0; }
   .cart-btn.has .cart-count { display: flex; }
   .cart-btn.bump { animation: cbump .4s var(--ease); }
   @keyframes cbump { 0%,100%{ transform: scale(1); } 40%{ transform: scale(1.18); } }
+
   @media (max-width: 760px){ nav .n-links { display: none; } nav .n-l .wordmark { font-size: 1.3rem; } }
+
   .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 100px 0 40px; overflow: hidden; position: relative; }
   .hero .top { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--muted); margin-bottom: 4vh; }
   .stack { will-change: transform; }
   .stack .line { overflow: hidden; }
-  .stack .line h1 { font-size: clamp(3rem, 18vw, 18rem); font-weight: 700; letter-spacing: -0.04em; line-height: 0.86; white-space: nowrap; display: inline-block; }
+  .stack .line h1 { font-size: clamp(3rem, 18vw, 18rem); font-weight: 700; letter-spacing: -0.04em; line-height: 0.86;
+    white-space: nowrap; display: inline-block; }
   .stack .line:nth-child(odd) h1 { color: var(--ink); }
   .stack .line:nth-child(even) h1 { color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
   .stack .line .drift { display: inline-block; will-change: transform; }
   .stack .line .drift .accent { color: var(--accent); -webkit-text-stroke: 0; }
+
   .hero .foot { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 4vh; flex-wrap: wrap; gap: 20px; }
   .hero .foot .role { font-size: clamp(0.9rem,1.6vw,1.15rem); max-width: 30ch; }
   .hero .foot .scrolldn { font-size: 0.7rem; color: var(--muted); display: flex; align-items: center; gap: 10px; }
   .hero .foot .scrolldn .arrow { width: 30px; height: 30px; border: 1px solid var(--ink); border-radius: 50%; display: grid; place-items: center; animation: bob 1.8s var(--ease) infinite; }
   @keyframes bob { 0%,100%{transform:translateY(0);} 50%{transform:translateY(4px);} }
+
   section.block { padding: clamp(80px,12vh,180px) 0; position: relative; }
   .shead { display: flex; align-items: baseline; gap: 16px; margin-bottom: 50px; }
   .shead .idx { font-size: 0.72rem; color: var(--accent); }
@@ -93,24 +137,50 @@
   .shead h2 .sl { display: inline-block; }
   .shead .rule { flex: 1; height: 1px; background: var(--line); }
   .shead .cnt { font-size: 0.72rem; color: var(--muted); }
+
+  .work { border-top: 1px solid var(--line); }
+  .work .row { display: grid; grid-template-columns: 48px 1fr auto auto; gap: 24px; align-items: center; padding: 30px 6px;
+    border-bottom: 1px solid var(--line); position: relative; cursor: pointer; transition: padding .4s var(--ease), background .4s; }
+  .work .row:hover { padding-left: 24px; background: rgba(27,70,224,0.04); }
+  .work .row .rn { font-size: 0.72rem; color: var(--faint); }
+  .work .row .title { font-size: clamp(1.6rem,4.4vw,3.4rem); font-weight: 600; letter-spacing: -0.02em; transition: color .3s;
+    padding: 0.28em 0; margin: -0.28em 0; overflow: visible; display: inline-block; }
+  .work .row .title .tl { display: inline-block; will-change: transform; }
+  .work .row:hover .title { color: var(--accent); }
+  .work .row .cat { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .work .row .meta { position: absolute; left: 72px; bottom: 10px; display: flex; gap: 22px; font-size: 0.66rem; color: var(--muted);
+    opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .3s var(--ease); pointer-events: none; }
+  .work .row:hover .meta { opacity: 1; transform: translateY(0); }
+  .work .row .meta b { color: var(--ink); font-weight: 500; }
+  .work .row .open { font-size: 0.66rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.14em; opacity: 0; transition: opacity .3s; }
+  .work .row:hover .open { opacity: 1; color: var(--accent); }
+  @media (max-width: 760px){ .work .row .meta { display: none; } .work .row { grid-template-columns: 36px 1fr auto; } .work .row .cat { display: none; } }
+
+  /* ---------- RELEASES (nested expandable folders) ---------- */
   .releases { border-top: 1px solid var(--line); }
   .folder { border-bottom: 1px solid var(--line); }
-  .folder-head { display: grid; grid-template-columns: 28px 1fr auto; gap: 16px; align-items: baseline; padding: 24px 6px; cursor: pointer; transition: background .3s, padding-left .3s var(--ease); }
+  .folder-head { display: grid; grid-template-columns: 28px 1fr auto; gap: 16px; align-items: baseline; padding: 24px 6px; cursor: pointer;
+    transition: background .3s, padding-left .3s var(--ease); }
   .folder-head:hover { background: rgba(27,70,224,0.04); padding-left: 16px; }
   .folder-head .fchev { color: var(--accent); font-size: 0.8rem; transition: transform .3s var(--ease); display: inline-block; }
   .folder.open > .folder-head .fchev { transform: rotate(90deg); }
   .folder-head .fname { font-size: clamp(1.4rem,3.6vw,2.4rem); font-weight: 700; letter-spacing: -0.02em; }
   .folder-head .fmeta { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
   .folder-body { overflow: hidden; height: 0; }
+
+  /* sub-folder (KARBON / KLOUD) nested one level in */
   .subfolder { border-top: 1px solid var(--line); }
-  .subfolder-head { display: grid; grid-template-columns: 24px 1fr auto; gap: 14px; align-items: baseline; padding: 18px 6px 18px 44px; cursor: pointer; transition: background .3s, padding-left .3s var(--ease); }
+  .subfolder-head { display: grid; grid-template-columns: 24px 1fr auto; gap: 14px; align-items: baseline; padding: 18px 6px 18px 44px; cursor: pointer;
+    transition: background .3s, padding-left .3s var(--ease); }
   .subfolder-head:hover { background: rgba(27,70,224,0.05); padding-left: 54px; }
   .subfolder-head .sfchev { color: var(--accent); font-size: 0.72rem; transition: transform .3s var(--ease); display: inline-block; }
   .subfolder.open > .subfolder-head .sfchev { transform: rotate(90deg); }
   .subfolder-head .sfname { font-size: clamp(1.1rem,2.8vw,1.8rem); font-weight: 700; letter-spacing: -0.01em; }
   .subfolder-head .sfmeta { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.09em; }
   .subfolder-body { overflow: hidden; height: 0; }
-  .rel-item { display: grid; grid-template-columns: 40px 1fr auto auto; gap: 18px; align-items: baseline; padding: 15px 6px 15px 80px; border-top: 1px solid var(--line); cursor: pointer; transition: background .25s, padding-left .3s var(--ease); }
+
+  .rel-item { display: grid; grid-template-columns: 40px 1fr auto auto; gap: 18px; align-items: baseline; padding: 15px 6px 15px 80px;
+    border-top: 1px solid var(--line); cursor: pointer; transition: background .25s, padding-left .3s var(--ease); }
   .rel-item:hover { background: rgba(27,70,224,0.06); padding-left: 90px; }
   .rel-item .ri-n { font-size: 0.7rem; color: var(--faint); }
   .rel-item .ri-name { font-size: clamp(1rem,2.2vw,1.35rem); font-weight: 600; letter-spacing: -0.01em; transition: color .25s; }
@@ -120,15 +190,19 @@
   .rel-item:hover .ri-open { opacity: 1; }
   .rel-empty { padding: 20px 6px 24px 44px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.8rem; letter-spacing: 0.04em; }
   @media (max-width: 640px){ .rel-item { grid-template-columns: 30px 1fr; padding-left: 60px; } .rel-item:hover { padding-left: 66px; } .rel-item .ri-cat, .rel-item .ri-open { display: none; } }
+
   .marq { overflow: hidden; white-space: nowrap; padding: 24px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .marq .run { display: inline-flex; gap: 40px; will-change: transform; }
   .marq .run span { font-size: clamp(2rem,7vw,5rem); font-weight: 700; letter-spacing: -0.02em; display: inline-flex; gap: 40px; align-items: center; }
   .marq .run span em { font-style: normal; color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
   .marq .run .star { color: var(--accent); display: inline-block; }
+
   .about p { font-size: clamp(1.3rem,3vw,2.4rem); font-weight: 400; line-height: 1.35; max-width: 26ch; }
   .about p .w { display: inline-block; }
   .about p .accent { color: var(--accent); }
   .about .jury { margin-top: 30px; font-size: 0.74rem; color: var(--muted); letter-spacing: 0.1em; }
+
+  /* ---------- TIMELINE ---------- */
   .timeline { position: relative; margin-top: 40px; padding-left: 4px; }
   .timeline .tspine { position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: var(--line); }
   .timeline .tspine .tfill { position: absolute; left: 0; top: 0; width: 100%; height: 0; background: var(--accent); }
@@ -139,6 +213,8 @@
   .timeline .trow .tdate { font-size: 0.8rem; color: var(--accent); font-weight: 600; }
   .timeline .trow .tbody h4 { font-size: clamp(1.1rem,2.6vw,1.7rem); font-weight: 600; letter-spacing: -0.01em; }
   .timeline .trow .tbody p { color: var(--muted); font-size: 0.9rem; margin-top: 6px; max-width: 46ch; }
+
+  /* ---------- FAQ ---------- */
   .faq-list { border-top: 1px solid var(--line); }
   .faq-item { border-bottom: 1px solid var(--line); }
   .faq-q { display: flex; align-items: center; gap: 16px; padding: 22px 6px; cursor: pointer; transition: padding-left .3s var(--ease), background .3s; }
@@ -149,37 +225,8 @@
   .faq-a { overflow: hidden; height: 0; }
   .faq-a .fa-inner { padding: 0 6px 24px 42px; color: var(--muted); font-size: 0.95rem; line-height: 1.7; max-width: 62ch; }
   .faq-a .fa-inner strong { color: var(--ink-2); font-weight: 600; }
-</style>
-</head>
-<style>
-  .po { position: fixed; inset: 0; z-index: 120; visibility: hidden; }
-  .po.open { visibility: visible; }
-  .po .po-bg { position: absolute; inset: 0; background: rgba(10,9,7,0.4); opacity: 0; transition: opacity .5s var(--ease); }
-  .po.open .po-bg { opacity: 1; }
-  .po .po-panel { position: absolute; top: 0; right: 0; height: 100%; width: min(760px, 100%); background: var(--paper); transform: translateX(100%); transition: transform .6s var(--ease); overflow-y: auto; box-shadow: -20px 0 60px rgba(0,0,0,0.15); }
-  .po.open .po-panel { transform: translateX(0); }
-  .po .po-inner { padding: clamp(30px,5vw,60px); min-height: 100%; }
-  .po .po-close { position: sticky; top: 0; margin-left: auto; display: flex; align-items: center; gap: 8px; width: fit-content; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink); cursor: pointer; background: var(--paper); padding: 6px 0; }
-  .po .po-close .x { width: 28px; height: 28px; border: 1px solid var(--ink); border-radius: 50%; display: grid; place-items: center; transition: background .2s, color .2s, transform .3s; }
-  .po .po-close:hover .x { background: var(--ink); color: var(--paper); transform: rotate(90deg); }
-  .po .po-num { font-size: 0.72rem; color: var(--accent); margin-top: 10px; }
-  .po .po-title { font-size: clamp(2.6rem,8vw,5rem); font-weight: 700; letter-spacing: -0.03em; line-height: 0.95; margin: 6px 0 4px; }
-  .po .po-sub { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; }
-  .po .po-hero { margin: 30px 0; aspect-ratio: 4/3; border-radius: 8px; overflow: hidden; position: relative; display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 1.2rem; letter-spacing: 0.04em; border: 1px solid var(--line); background: var(--paper-2); }
-  .po .po-hero .ph-tag { position: absolute; bottom: 14px; left: 16px; font-size: 0.6rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.14em; z-index: 2; }
-  .po .po-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
-  .po .po-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0 34px; }
-  .po .po-gallery .g { aspect-ratio: 1; border-radius: 6px; overflow: hidden; position: relative; display: grid; place-items: center; color: rgba(255,255,255,0.85); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.14em; border: 1px solid var(--line); background: var(--paper-2); }
-  .po .po-gallery .g img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .po .po-desc p { font-size: 1rem; line-height: 1.7; color: var(--ink-2); margin-bottom: 16px; max-width: 54ch; }
-  .po .po-specs { border-top: 1px solid var(--line); margin-top: 24px; }
-  .po .po-specs .sr { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 0.88rem; }
-  .po .po-specs .sr span:first-child { color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.72rem; }
-  .po .po-specs .sr b { font-weight: 600; }
-  .po .po-cta { display: inline-block; margin-top: 34px; font-size: clamp(1.1rem,2.6vw,1.9rem); font-weight: 700; letter-spacing: -0.02em; color: var(--accent); position: relative; padding: 0.2em 0; }
-  .po .po-cta .u { display: block; overflow: visible; }
-  .po .po-cta .u .el { display: inline-block; }
-  .po .po-cta:hover { color: var(--accent-2); }
+
+  /* ---------- SIZE GUIDE (in product panel) ---------- */
   .po .po-sizeguide { margin-top: 24px; border-top: 1px solid var(--line); }
   .po .po-sizeguide summary { padding: 16px 0; cursor: pointer; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); list-style: none; display: flex; align-items: center; gap: 8px; }
   .po .po-sizeguide summary::-webkit-details-marker { display: none; }
@@ -190,34 +237,83 @@
   .po .po-sizeguide th { color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.66rem; font-weight: 600; }
   .po .po-sizeguide td:first-child { font-weight: 600; }
   .po .po-sizeguide .sg-note { font-size: 0.72rem; color: var(--faint); padding: 0 8px 16px; }
+
   .contact { text-align: center; padding: clamp(80px,14vh,200px) 0; position: relative; }
   .contact .lead { font-size: 0.8rem; color: var(--muted); margin-bottom: 20px; }
   .contact a.email { font-size: clamp(2rem,9vw,7rem); font-weight: 700; letter-spacing: -0.03em; display: inline-block; position: relative; padding: 0.12em 0; }
   .contact a.email .u { display: block; overflow: visible; }
   .contact a.email .u .el { display: inline-block; }
   .contact a.email:hover { color: var(--accent); }
+
   .contact a.yt-btn { display: inline-block; margin-top: 26px; font-size: clamp(1rem,2.4vw,1.7rem); font-weight: 700; letter-spacing: -0.02em; color: var(--red); position: relative; padding: 0.2em 0; }
   .contact a.yt-btn .u { display: block; overflow: visible; }
   .contact a.yt-btn .u .el { display: inline-block; }
   .contact a.yt-btn:hover { color: #b81812; }
+
   .contact .socials { display: flex; gap: 24px; justify-content: center; margin-top: 40px; font-size: 0.82rem; }
   .contact .socials a { position: relative; }
   .contact .socials a::after { content:""; position:absolute; left:0; bottom:-3px; width:0; height:1px; background: var(--ink); transition: width .3s var(--ease); }
   .contact .socials a:hover::after { width: 100%; }
+
   footer { padding: 40px 0 50px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.72rem; color: var(--muted); }
   footer .fmark { font-family: "LOT","Helvetica Neue",Arial,sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); flex: 0 0 auto; }
+
   .reveal { will-change: transform, opacity; }
+
+  /* ============================================================
+     PRODUCT OVERLAY (in-page modal)
+     ============================================================ */
+  .po { position: fixed; inset: 0; z-index: 120; visibility: hidden; }
+  .po.open { visibility: visible; }
+  .po .po-bg { position: absolute; inset: 0; background: rgba(10,9,7,0.4); opacity: 0; transition: opacity .5s var(--ease); }
+  .po.open .po-bg { opacity: 1; }
+  .po .po-panel { position: absolute; top: 0; right: 0; height: 100%; width: min(760px, 100%); background: var(--paper);
+    transform: translateX(100%); transition: transform .6s var(--ease); overflow-y: auto; box-shadow: -20px 0 60px rgba(0,0,0,0.15); }
+  .po.open .po-panel { transform: translateX(0); }
+  .po .po-inner { padding: clamp(30px,5vw,60px); min-height: 100%; }
+  .po .po-close { position: sticky; top: 0; margin-left: auto; display: flex; align-items: center; gap: 8px; width: fit-content;
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink); cursor: pointer; background: var(--paper); padding: 6px 0; }
+  .po .po-close .x { width: 28px; height: 28px; border: 1px solid var(--ink); border-radius: 50%; display: grid; place-items: center; transition: background .2s, color .2s, transform .3s; }
+  .po .po-close:hover .x { background: var(--ink); color: var(--paper); transform: rotate(90deg); }
+  .po .po-num { font-size: 0.72rem; color: var(--accent); margin-top: 10px; }
+  .po .po-title { font-size: clamp(2.6rem,8vw,5rem); font-weight: 700; letter-spacing: -0.03em; line-height: 0.95; margin: 6px 0 4px; }
+  .po .po-sub { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; }
+  .po .po-hero { margin: 30px 0; aspect-ratio: 4/3; border-radius: 8px; overflow: hidden; position: relative; display: grid; place-items: center;
+    color: #fff; font-weight: 700; font-size: 1.2rem; letter-spacing: 0.04em; border: 1px solid var(--line); background: var(--paper-2); }
+  .po .po-hero .ph-tag { position: absolute; bottom: 14px; left: 16px; font-size: 0.6rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.14em; z-index: 2; }
+  .po .po-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+  .po .po-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0 34px; }
+  .po .po-gallery .g { aspect-ratio: 1; border-radius: 6px; overflow: hidden; position: relative; display: grid; place-items: center; color: rgba(255,255,255,0.85); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.14em; border: 1px solid var(--line); background: var(--paper-2); }
+  .po .po-gallery .g img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .po .po-desc p { font-size: 1rem; line-height: 1.7; color: var(--ink-2); margin-bottom: 16px; max-width: 54ch; }
+  .po .po-specs { border-top: 1px solid var(--line); margin-top: 24px; }
+  .po .po-specs .sr { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 0.88rem; }
+  .po .po-specs .sr span:first-child { color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.72rem; }
+  .po .po-specs .sr b { font-weight: 600; }
+  .po .po-cta { display: inline-block; margin-top: 34px; font-size: clamp(1.1rem,2.6vw,1.9rem); font-weight: 700; letter-spacing: -0.02em;
+    color: var(--accent); position: relative; padding: 0.2em 0; }
+  .po .po-cta .u { display: block; overflow: visible; }
+  .po .po-cta .u .el { display: inline-block; }
+  .po .po-cta:hover { color: var(--accent-2); }
+
+  /* ============================================================
+     CHECKOUT PANEL (UI shell — Stripe wiring added later)
+     ============================================================ */
   .co { position: fixed; inset: 0; z-index: 130; visibility: hidden; }
   .co.open { visibility: visible; }
   .co .co-bg { position: absolute; inset: 0; background: rgba(10,9,7,0.5); opacity: 0; transition: opacity .5s var(--ease); }
   .co.open .co-bg { opacity: 1; }
-  .co .co-panel { position: absolute; top: 0; right: 0; height: 100%; width: min(520px, 100%); background: var(--paper); transform: translateX(100%); transition: transform .6s var(--ease); overflow-y: auto; box-shadow: -20px 0 60px rgba(0,0,0,0.18); }
+  .co .co-panel { position: absolute; top: 0; right: 0; height: 100%; width: min(520px, 100%); background: var(--paper);
+    transform: translateX(100%); transition: transform .6s var(--ease); overflow-y: auto; box-shadow: -20px 0 60px rgba(0,0,0,0.18); }
   .co.open .co-panel { transform: translateX(0); }
   .co .co-inner { padding: clamp(28px,5vw,52px); min-height: 100%; display: flex; flex-direction: column; }
-  .co .co-close { margin-left: auto; display: flex; align-items: center; gap: 8px; width: fit-content; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink); cursor: pointer; }
+  .co .co-close { margin-left: auto; display: flex; align-items: center; gap: 8px; width: fit-content;
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink); cursor: pointer; }
   .co .co-close .x { width: 28px; height: 28px; border: 1px solid var(--ink); border-radius: 50%; display: grid; place-items: center; transition: background .2s, color .2s, transform .3s; }
   .co .co-close:hover .x { background: var(--ink); color: var(--paper); transform: rotate(90deg); }
   .co .co-h { font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; margin: 8px 0 20px; }
+
+  /* line item (repeatable basket row) */
   .co .co-item { display: grid; grid-template-columns: 68px 1fr auto; gap: 16px; align-items: start; padding: 18px 0; border-bottom: 1px solid var(--line); }
   .co #coItems .co-item:first-child { border-top: 1px solid var(--line); }
   .co .co-item .co-thumb { width: 68px; height: 68px; border-radius: 6px; overflow: hidden; position: relative; background: var(--paper-2); border: 1px solid var(--line); }
@@ -232,15 +328,29 @@
   .co .co-empty { padding: 44px 0; text-align: center; color: var(--muted); font-size: 0.82rem; letter-spacing: 0.04em; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .co.has-items .co-empty { display: none; }
   .co:not(.has-items) .co-form, .co:not(.has-items) .co-totals, .co:not(.has-items) .co-pay, .co:not(.has-items) .co-note, .co:not(.has-items) .co-secure { display: none; }
+
+  /* form fields */
   .co .co-form { margin-top: 26px; display: flex; flex-direction: column; gap: 16px; }
   .co .co-row { display: flex; gap: 12px; }
   .co .co-row > * { flex: 1; }
   .co .co-field label { display: block; font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 6px; }
-  .co .co-field input, .co .co-field select { width: 100%; background: var(--paper-2); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; font-family: inherit; font-size: 0.92rem; color: var(--ink); transition: border-color .2s, background .2s; }
+  .co .co-field input, .co .co-field select { width: 100%; background: var(--paper-2); border: 1px solid var(--line); border-radius: 6px;
+    padding: 12px 14px; font-family: inherit; font-size: 0.92rem; color: var(--ink); transition: border-color .2s, background .2s; }
   .co .co-field input:focus, .co .co-field select:focus { outline: none; border-color: var(--accent); background: var(--paper); }
   .co .co-field input::placeholder { color: var(--faint); }
-  .co .co-card-slot { background: var(--paper-2); border: 1px dashed var(--line); border-radius: 6px; padding: 16px 14px; font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+
+  /* quantity stepper */
+  .co .co-qty { display: flex; align-items: center; gap: 0; border: 1px solid var(--line); border-radius: 5px; width: fit-content; overflow: hidden; }
+  .co .co-qty button { width: 30px; height: 32px; background: var(--paper-2); border: none; font-family: inherit; font-size: 0.95rem; color: var(--ink); cursor: pointer; transition: background .2s; }
+  .co .co-qty button:hover { background: var(--line); }
+  .co .co-qty .qv { width: 32px; text-align: center; font-weight: 600; font-size: 0.82rem; }
+
+  /* card field placeholder (Stripe Elements mounts here later) */
+  .co .co-card-slot { background: var(--paper-2); border: 1px dashed var(--line); border-radius: 6px; padding: 16px 14px;
+    font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 10px; }
   .co .co-card-slot .lock { color: var(--accent); }
+
+  /* delivery method chooser */
   .co .co-ship { display: flex; flex-direction: column; gap: 10px; }
   .co .co-ship .ship-opt { display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; transition: border-color .2s, background .2s; }
   .co .co-ship .ship-opt:hover { border-color: var(--accent); }
@@ -252,17 +362,22 @@
   .co .co-ship .ship-opt .s-time { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
   .co .co-ship .ship-opt .s-price { font-weight: 700; font-size: 0.92rem; }
   .co .co-ship .ship-opt .s-price.free { color: var(--accent); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.1em; }
+
+  /* totals */
   .co .co-totals { margin-top: 26px; border-top: 1px solid var(--line); padding-top: 18px; }
   .co .co-totals .tr { display: flex; justify-content: space-between; font-size: 0.86rem; padding: 6px 0; color: var(--ink-2); }
   .co .co-totals .tr.grand { font-size: 1.15rem; font-weight: 700; color: var(--ink); border-top: 1px solid var(--line); margin-top: 8px; padding-top: 14px; }
   .co .co-totals .tr .free { color: var(--accent); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.1em; }
-  .co .co-pay { margin-top: 24px; width: 100%; padding: 18px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-family: inherit; font-size: 1.05rem; font-weight: 700; letter-spacing: 0.01em; cursor: pointer; transition: background .25s, transform .15s; }
+
+  /* pay button */
+  .co .co-pay { margin-top: 24px; width: 100%; padding: 18px; background: var(--accent); color: #fff; border: none; border-radius: 8px;
+    font-family: inherit; font-size: 1.05rem; font-weight: 700; letter-spacing: 0.01em; cursor: pointer; transition: background .25s, transform .15s; }
   .co .co-pay:hover { background: var(--accent-2); }
-  .co .co-pay:disabled { opacity: 0.6; cursor: default; }
   .co .co-pay:active { transform: scale(0.99); }
   .co .co-note { margin-top: 14px; font-size: 0.72rem; color: var(--muted); line-height: 1.5; text-align: center; }
   .co .co-secure { margin-top: 18px; font-size: 0.66rem; color: var(--faint); text-align: center; letter-spacing: 0.06em; }
 </style>
+</head>
 <body>
   <div class="grain"></div>
   <div class="orbit" id="orbit"></div>
@@ -275,7 +390,9 @@
   </div>
 
   <nav>
-    <a class="n-l" href="#top" aria-label="KALMERA — home"><span class="wordmark">KALMERA</span></a>
+    <a class="n-l" href="#top" aria-label="KALMERA — home">
+      <span class="wordmark">KALMERA</span>
+    </a>
     <div class="n-right">
       <div class="n-links">
         <a href="#recognitions" data-scramble>Releases</a>
@@ -295,23 +412,27 @@
   </nav>
 
   <main>
+    <!-- ================= HERO ================= -->
     <section class="hero wrap" id="top">
       <div class="top mono reveal">
         <span>Creating a new era of essentials</span>
         <span>ENG · Est. 2025</span>
       </div>
+
       <div class="stack" id="stack">
         <div class="line"><h1><span class="drift">KALMERA KALMERA KALMERA</span></h1></div>
         <div class="line"><h1><span class="drift">essentials <span class="accent">·</span> essentials <span class="accent">·</span></span></h1></div>
         <div class="line"><h1><span class="drift">KALMERA KALMERA KALMERA</span></h1></div>
         <div class="line"><h1><span class="drift">new era <span class="accent">·</span> new era <span class="accent">·</span></span></h1></div>
       </div>
+
       <div class="foot">
-        <p class="role reveal">Two lines, engineered with obsessive attention. Nothing wasted, everything intentional.</p>
+        <p class="role reveal">Two pieces, engineered with obsessive attention. Nothing wasted, everything intentional.</p>
         <div class="scrolldn reveal"><span class="mono">SCROLL</span><span class="arrow">↓</span></div>
       </div>
     </section>
 
+    <!-- ================= MARQUEE ================= -->
     <div class="marq">
       <div class="run" data-marq>
         <span>KALMERA <span class="star">✺</span> <em>KARBON</em> <span class="star">✺</span> KLOUD <span class="star">✺</span> <em>NEW ERA</em> <span class="star">✺</span> NOTHING WASTED <span class="star">✺</span></span>
@@ -319,42 +440,73 @@
       </div>
     </div>
 
+    <!-- ================= RELEASES (nested folders) ================= -->
     <section class="block wrap" id="recognitions">
       <div class="shead reveal"><span class="idx mono">[01]</span><h2 data-split-h>Releases</h2><span class="rule"></span><span class="cnt mono" data-count="1">0</span></div>
       <div class="releases">
+
+        <!-- DROP 01 -->
         <div class="folder open" data-folder>
-          <div class="folder-head"><span class="fchev mono">▸</span><span class="fname">Drop 01</span><span class="fmeta mono">02 Lines · Oct 2026</span></div>
+          <div class="folder-head">
+            <span class="fchev mono">▸</span>
+            <span class="fname">Drop 01</span>
+            <span class="fmeta mono">02 Lines · Oct 2026</span>
+          </div>
           <div class="folder-body">
+
+            <!-- KARBON line -->
             <div class="subfolder" data-folder>
-              <div class="subfolder-head"><span class="sfchev mono">▸</span><span class="sfname">KARBON</span><span class="sfmeta mono">The Anchor</span></div>
+              <div class="subfolder-head">
+                <span class="sfchev mono">▸</span>
+                <span class="sfname">KARBON</span>
+                <span class="sfmeta mono">The Anchor</span>
+              </div>
               <div class="subfolder-body">
                 <div class="rel-item" data-product="karbon-hoodie"><span class="ri-n mono">01</span><span class="ri-name">Mass — Hoodie</span><span class="ri-cat mono">500 g/m² · £50</span><span class="ri-open mono">Open →</span></div>
                 <div class="rel-item" data-product="karbon-tee"><span class="ri-n mono">02</span><span class="ri-name">Base — Tee</span><span class="ri-cat mono">400 g/m² · £30</span><span class="ri-open mono">Open →</span></div>
                 <div class="rel-item" data-product="karbon-sweatpants"><span class="ri-n mono">03</span><span class="ri-name">Drift — Sweatpants</span><span class="ri-cat mono">420 g/m² · £40</span><span class="ri-open mono">Open →</span></div>
               </div>
             </div>
+
+            <!-- KLOUD line -->
             <div class="subfolder" data-folder>
-              <div class="subfolder-head"><span class="sfchev mono">▸</span><span class="sfname">KLOUD</span><span class="sfmeta mono">The Counterpoint</span></div>
+              <div class="subfolder-head">
+                <span class="sfchev mono">▸</span>
+                <span class="sfname">KLOUD</span>
+                <span class="sfmeta mono">The Counterpoint</span>
+              </div>
               <div class="subfolder-body">
                 <div class="rel-item" data-product="kloud-hoodie"><span class="ri-n mono">01</span><span class="ri-name">Mass — Hoodie</span><span class="ri-cat mono">500 g/m² · £50</span><span class="ri-open mono">Open →</span></div>
                 <div class="rel-item" data-product="kloud-tee"><span class="ri-n mono">02</span><span class="ri-name">Base — Tee</span><span class="ri-cat mono">400 g/m² · £30</span><span class="ri-open mono">Open →</span></div>
                 <div class="rel-item" data-product="kloud-sweatpants"><span class="ri-n mono">03</span><span class="ri-name">Drift — Sweatpants</span><span class="ri-cat mono">420 g/m² · £40</span><span class="ri-open mono">Open →</span></div>
               </div>
             </div>
+
           </div>
         </div>
+
+        <!-- DROP 02 -->
         <div class="folder" data-folder>
-          <div class="folder-head"><span class="fchev mono">▸</span><span class="fname">Drop 02</span><span class="fmeta mono">Coming 2027</span></div>
-          <div class="folder-body"><div class="rel-empty mono">In studio — nothing on the table yet. Join the list to hear it first.</div></div>
+          <div class="folder-head">
+            <span class="fchev mono">▸</span>
+            <span class="fname">Drop 02</span>
+            <span class="fmeta mono">Coming 2027</span>
+          </div>
+          <div class="folder-body">
+            <div class="rel-empty mono">In studio — nothing on the table yet. Join the list to hear it first.</div>
+          </div>
         </div>
+
       </div>
     </section>
 
+    <!-- ================= ABOUT ================= -->
     <section class="block wrap about">
       <p data-words>KALMERA is an essentials studio in England, building the <span class="accent">fewest, best</span> pieces — engineered fabric, obsessive fit, nothing wasted. Made to be worn for years, not seasons.</p>
       <div class="jury mono reveal">( founded 2025 · welcome to a new era ✺ )</div>
     </section>
 
+    <!-- ================= TIMELINE ================= -->
     <section class="block wrap" id="timeline">
       <div class="shead reveal"><span class="idx mono">[02]</span><h2 data-split-h>The Timeline</h2><span class="rule"></span><span class="cnt mono">2025 — 2027</span></div>
       <div class="timeline" id="tl">
@@ -362,11 +514,12 @@
         <div class="trow"><span class="tdot"></span><span class="tdate mono">Q4 2025</span><div class="tbody"><h4>KALMERA Apparel founded</h4><p>One table, a single idea — build the fewest, best essentials and nothing else.</p></div></div>
         <div class="trow"><span class="tdot"></span><span class="tdate mono">Q1 2026</span><div class="tbody"><h4>Fabric development</h4><p>Sampling heavyweight 500 g/m² fleece until KARBON and KLOUD hold their shape and feel.</p></div></div>
         <div class="trow"><span class="tdot"></span><span class="tdate mono">Q2 2026</span><div class="tbody"><h4>Identity &amp; studio</h4><p>The KALMERA identity takes shape — the mark, the type, the philosophy of nothing wasted.</p></div></div>
-        <div class="trow"><span class="tdot"></span><span class="tdate mono">Oct 2026</span><div class="tbody"><h4>Drop 01 — the goal</h4><p>The plan: KARBON &amp; KLOUD land, each as Mass, Base and Drift. No restocks — once they're gone, they rest.</p></div></div>
+        <div class="trow"><span class="tdot"></span><span class="tdate mono">Oct 2026</span><div class="tbody"><h4>Drop 01 — the goal</h4><p>The plan: KARBON &amp; KLOUD land, each as a hoodie, tee and sweatpants. No restocks — once they're gone, they rest.</p></div></div>
         <div class="trow"><span class="tdot"></span><span class="tdate mono">2027</span><div class="tbody"><h4>Drop 02 — on the horizon</h4><p>The next chapter, still to come. The list hears it first.</p></div></div>
       </div>
     </section>
 
+    <!-- ================= FAQ ================= -->
     <section class="block wrap" id="faq">
       <div class="shead reveal"><span class="idx mono">[03]</span><h2 data-split-h>Questions</h2><span class="rule"></span><span class="cnt mono">Good to know</span></div>
       <div class="faq-list">
@@ -397,11 +550,16 @@
       </div>
     </section>
 
+    <!-- ================= CONTACT ================= -->
     <section class="contact wrap" id="contact">
       <div class="lead mono reveal">Let's dress the new era</div>
-      <a class="email" href="mailto:kalmera.team@gmail.com?subject=Join%20the%20list&body=Add%20me%20to%20the%20KALMERA%20list%20%E2%80%94%20I%20want%20to%20hear%20when%20Drop%2001%20lands." data-cursor="visit"><span class="u" data-email>join the list</span></a>
+      <a class="email" href="mailto:kalmera.team@gmail.com?subject=Join%20the%20list&body=Add%20me%20to%20the%20KALMERA%20list%20%E2%80%94%20I%20want%20to%20hear%20when%20Drop%2001%20lands." data-cursor="visit">
+        <span class="u" data-email>join the list</span>
+      </a>
       <br>
-      <a class="yt-btn" href="https://www.youtube.com/@kalmera-store" target="_blank" rel="noopener" data-cursor="visit"><span class="u" data-yt>watch on youtube ↗</span></a>
+      <a class="yt-btn" href="https://www.youtube.com/@kalmera-store" target="_blank" rel="noopener" data-cursor="visit">
+        <span class="u" data-yt>watch on youtube ↗</span>
+      </a>
       <div class="socials mono reveal">
         <a href="https://www.youtube.com/@kalmera-store" target="_blank" rel="noopener">YouTube</a>
       </div>
@@ -414,6 +572,7 @@
     </footer>
   </main>
 
+  <!-- ================= PRODUCT OVERLAY ================= -->
   <div class="po" id="po" aria-hidden="true">
     <div class="po-bg" data-po-close></div>
     <div class="po-panel">
@@ -434,14 +593,19 @@
     </div>
   </div>
 
+  <!-- ================= CHECKOUT PANEL (UI shell) ================= -->
   <div class="co" id="co" aria-hidden="true">
     <div class="co-bg" data-co-close></div>
     <div class="co-panel">
       <div class="co-inner">
         <div class="co-close" data-co-close><span class="x">✕</span> <span class="mono">Close</span></div>
         <div class="co-h mono">Your Basket</div>
+
+        <!-- basket items get rendered here -->
         <div id="coItems"></div>
         <div class="co-empty mono" id="coEmpty">Your basket is empty.</div>
+
+        <!-- form: just pick delivery — name/email/address/card are collected securely on Stripe's page -->
         <div class="co-form" id="coForm">
           <div class="co-field">
             <label>Delivery</label>
@@ -458,22 +622,26 @@
               </div>
             </div>
           </div>
+
           <div class="co-field">
             <div class="co-card-slot"><span class="lock">🔒</span> Your name, address &amp; card are entered securely on the next step, handled by Stripe. KALMERA never sees your card details.</div>
           </div>
         </div>
+
+        <!-- totals -->
         <div class="co-totals" id="coTotals">
           <div class="tr"><span>Subtotal</span><span id="coSubtotal">—</span></div>
           <div class="tr"><span>Shipping</span><span id="coShipLine" class="free">Free · Standard</span></div>
           <div class="tr grand"><span>Total</span><span id="coTotal">—</span></div>
         </div>
+
         <button class="co-pay" id="coPay">Pay —</button>
         <div class="co-note">Made to order — printed by hand once you order, then shipped worldwide. Allow time for production ahead of the drop.</div>
         <div class="co-secure mono">🔒 Payments secured by Stripe · KALMERA never sees your card details</div>
       </div>
     </div>
   </div>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -497,9 +665,20 @@
         }, 35);
       }
 
+      /* ============================================================
+         SOUND — Web Audio, synthesized. Two buses: ambient (toggle) + fx (always on).
+         ============================================================ */
       const Sound = (() => {
-        let ctx = null, fxBus = null, ambientBus = null, ambientLevel = null, unlocked = false, ambientOn = false, lastTick = 0, noiseBuf = null;
-        function makeNoise() { const len = Math.floor(0.2 * ctx.sampleRate); noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate); const data = noiseBuf.getChannelData(0); for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1; }
+        let ctx = null, fxBus = null, ambientBus = null, ambientLevel = null,
+            unlocked = false, ambientOn = false, lastTick = 0, noiseBuf = null;
+
+        function makeNoise() {
+          const len = Math.floor(0.2 * ctx.sampleRate);
+          noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
+          const data = noiseBuf.getChannelData(0);
+          for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+        }
+
         function ensureCtx() {
           if (ctx) { if (ctx.state === "suspended") ctx.resume(); return; }
           ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -507,16 +686,20 @@
           fxBus = ctx.createGain(); fxBus.gain.value = 0.9; fxBus.connect(ctx.destination);
           ambientBus = ctx.createGain(); ambientBus.gain.value = 0.9; ambientBus.connect(ctx.destination);
           ambientLevel = ctx.createGain(); ambientLevel.gain.value = 0; ambientLevel.connect(ambientBus);
-          buildAmbient(); unlocked = true;
+          buildAmbient();
+          unlocked = true;
         }
+
         function buildAmbient() {
           const swell = ctx.createGain(); swell.gain.value = 0.32; swell.connect(ambientLevel);
           const swellLfo = ctx.createOscillator(); swellLfo.type = "sine"; swellLfo.frequency.value = 0.11;
           const swellDepth = ctx.createGain(); swellDepth.gain.value = 0.28;
           swellLfo.connect(swellDepth); swellDepth.connect(swell.gain); swellLfo.start();
+
           const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 340; lp.Q.value = 1.4; lp.connect(swell);
           const fLfo = ctx.createOscillator(); fLfo.type = "sine"; fLfo.frequency.value = 0.045;
           const fDepth = ctx.createGain(); fDepth.gain.value = 220; fLfo.connect(fDepth); fDepth.connect(lp.frequency); fLfo.start();
+
           const bed = [ [55, "sine", 0.5], [110, "sine", 0.3], [164.81, "sine", 0.16], [220, "triangle", 0.12], [329.63, "triangle", 0.07] ];
           bed.forEach(([f, type, g], idx) => {
             const o = ctx.createOscillator(); o.type = type; o.frequency.value = f;
@@ -525,31 +708,38 @@
             const dg = ctx.createGain(); dg.gain.value = 1.4; dv.connect(dg); dg.connect(o.detune); dv.start();
             o.connect(og); og.connect(lp); o.start();
           });
+
           const shimmer = ctx.createGain(); shimmer.gain.value = 0.055; shimmer.connect(ambientLevel);
           const sPan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
           if (sPan) { sPan.connect(shimmer); const pLfo = ctx.createOscillator(); pLfo.type = "sine"; pLfo.frequency.value = 0.04; const pD = ctx.createGain(); pD.gain.value = 0.8; pLfo.connect(pD); pD.connect(sPan.pan); pLfo.start(); }
           const sTarget = sPan || shimmer;
-          const sLp = ctx.createBiquadFilter(); sLp.type = "lowpass"; sLp.frequency.value = 900; sLp.Q.value = 3; sLp.connect(sTarget);
+          const sLp = ctx.createBiquadFilter(); sLp.type = "lowpass"; sLp.frequency.value = 900; sLp. Q.value = 3; sLp.connect(sTarget);
           const sLfo = ctx.createOscillator(); sLfo.type = "sine"; sLfo.frequency.value = 0.07; const sD = ctx.createGain(); sD.gain.value = 500; sLfo.connect(sD); sD.connect(sLp.frequency); sLfo.start();
           [440, 660].forEach((f, i) => { const o = ctx.createOscillator(); o.type = "sine"; o.frequency.value = f; const g = ctx.createGain(); g.gain.value = i ? 0.35 : 0.5; o.connect(g); g.connect(sLp); o.start(); });
+
           const pent = [220, 246.94, 293.66, 329.63, 392, 440, 493.88, 587.33];
           function bell() {
             if (!ambientOn) { scheduleBell(); return; }
-            const t = ctx.currentTime; const f = pent[Math.floor(Math.random()*pent.length)];
+            const t = ctx.currentTime;
+            const f = pent[Math.floor(Math.random()*pent.length)];
             const o = ctx.createOscillator(); o.type = "sine"; o.frequency.value = f;
             const o2 = ctx.createOscillator(); o2.type = "sine"; o2.frequency.value = f * 2.01;
-            const g = ctx.createGain(); g.gain.value = 0; const g2 = ctx.createGain(); g2.gain.value = 0;
+            const g = ctx.createGain(); g.gain.value = 0;
+            const g2 = ctx.createGain(); g2.gain.value = 0;
             o.connect(g); o2.connect(g2); g.connect(ambientLevel); g2.connect(ambientLevel);
             const vol = 0.05 + Math.random()*0.03;
             g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + 0.8); g.gain.exponentialRampToValueAtTime(0.0004, t + 5);
             g2.gain.setValueAtTime(0, t); g2.gain.linearRampToValueAtTime(vol*0.4, t + 0.8); g2.gain.exponentialRampToValueAtTime(0.0004, t + 4);
-            o.start(t); o.stop(t + 5.2); o2.start(t); o2.stop(t + 4.2); scheduleBell();
+            o.start(t); o.stop(t + 5.2); o2.start(t); o2.stop(t + 4.2);
+            scheduleBell();
           }
           function scheduleBell() { setTimeout(bell, 3500 + Math.random()*4500); }
           scheduleBell();
         }
+
         function keyClick() {
-          if (!unlocked) return; const t = ctx.currentTime;
+          if (!unlocked) return;
+          const t = ctx.currentTime;
           const n = ctx.createBufferSource(); n.buffer = noiseBuf;
           const nbp = ctx.createBiquadFilter(); nbp.type = "bandpass"; nbp.frequency.value = 2400; nbp.Q.value = 0.9;
           const ng = ctx.createGain(); ng.gain.setValueAtTime(0.5, t); ng.gain.exponentialRampToValueAtTime(0.0005, t + 0.03);
@@ -560,21 +750,31 @@
           o.connect(og); og.connect(fxBus); o.start(t); o.stop(t + 0.09);
         }
         function softTap() {
-          if (!unlocked) return; const t = ctx.currentTime;
+          if (!unlocked) return;
+          const t = ctx.currentTime;
           const n = ctx.createBufferSource(); n.buffer = noiseBuf;
           const nbp = ctx.createBiquadFilter(); nbp.type = "bandpass"; nbp.frequency.value = 3100; nbp.Q.value = 1.1;
           const ng = ctx.createGain(); ng.gain.setValueAtTime(0.13, t); ng.gain.exponentialRampToValueAtTime(0.0004, t + 0.022);
           n.connect(nbp); nbp.connect(ng); ng.connect(fxBus); n.start(t); n.stop(t + 0.035);
         }
         function tone(freq, dur, vol) {
-          if (!unlocked) return; const t = ctx.currentTime;
+          if (!unlocked) return;
+          const t = ctx.currentTime;
           const o = ctx.createOscillator(); o.type = "sine"; o.frequency.value = freq;
           const g = ctx.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0004, t + dur);
           o.connect(g); g.connect(fxBus); o.start(t); o.stop(t + dur + 0.02);
         }
+
         return {
           unlock() { ensureCtx(); },
-          toggleAmbient() { ensureCtx(); ambientOn = !ambientOn; const t = ctx.currentTime; ambientLevel.gain.cancelScheduledValues(t); ambientLevel.gain.linearRampToValueAtTime(ambientOn ? 0.16 : 0, t + 1.2); return ambientOn; },
+          toggleAmbient() {
+            ensureCtx();
+            ambientOn = !ambientOn;
+            const t = ctx.currentTime;
+            ambientLevel.gain.cancelScheduledValues(t);
+            ambientLevel.gain.linearRampToValueAtTime(ambientOn ? 0.16 : 0, t + 1.2);
+            return ambientOn;
+          },
           click() { keyClick(); },
           tick() { const now = performance.now(); if (now - lastTick < 45) return; lastTick = now; softTap(); },
           rowTap() { softTap(); },
@@ -583,9 +783,15 @@
       })();
 
       window.addEventListener("pointerdown", () => Sound.unlock(), { once: true });
-      const soundBtn = document.getElementById("soundBtn");
-      soundBtn.addEventListener("click", () => { const on = Sound.toggleAmbient(); soundBtn.classList.toggle("on", on); soundBtn.setAttribute("aria-pressed", on ? "true" : "false"); });
 
+      const soundBtn = document.getElementById("soundBtn");
+      soundBtn.addEventListener("click", () => {
+        const on = Sound.toggleAmbient();
+        soundBtn.classList.toggle("on", on);
+        soundBtn.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+
+      /* LOADER — numbers + bar only */
       const loader = document.getElementById("loader"), loadNum = document.getElementById("loadNum"), loadBar = document.getElementById("loadBar");
       function startSite() { introHero(); }
       if (reduce) { loader.style.display = "none"; startSite(); }
@@ -593,26 +799,45 @@
         const o = { v: 0 };
         gsap.to(o, { v: 100, duration: 1.8, ease: "power2.inOut",
           onUpdate: () => { loadNum.textContent = Math.round(o.v).toString().padStart(2,"0"); loadBar.style.width = o.v + "%"; },
-          onComplete: () => { gsap.to(loader, { yPercent: -100, duration: 0.9, ease: "expo.inOut", delay: 0.2, onComplete: () => { loader.style.display = "none"; ScrollTrigger.refresh(); } }); startSite(); }
+          onComplete: () => {
+            gsap.to(loader, { yPercent: -100, duration: 0.9, ease: "expo.inOut", delay: 0.2, onComplete: () => { loader.style.display = "none"; ScrollTrigger.refresh(); } });
+            startSite();
+          }
         });
       }
 
+      /* SMOOTH INERTIA SCROLL */
       let scrollVel = 0, scrollDir = 1, scrollPaused = false;
       if (!reduce) {
         let current = window.scrollY, target = window.scrollY, ease = 0.085, raf;
         const docEl = document.documentElement;
         const maxScroll = () => docEl.scrollHeight - window.innerHeight;
-        window.addEventListener("wheel", (e) => { if (scrollPaused) return; e.preventDefault(); target = Math.max(0, Math.min(maxScroll(), target + e.deltaY)); scrollDir = e.deltaY > 0 ? 1 : -1; if (!raf) raf = requestAnimationFrame(loop); }, { passive: false });
+        window.addEventListener("wheel", (e) => {
+          if (scrollPaused) return;
+          e.preventDefault();
+          target = Math.max(0, Math.min(maxScroll(), target + e.deltaY));
+          scrollDir = e.deltaY > 0 ? 1 : -1;
+          if (!raf) raf = requestAnimationFrame(loop);
+        }, { passive: false });
         function loop() {
-          const prev = current; current += (target - current) * ease; scrollVel = current - prev;
+          const prev = current;
+          current += (target - current) * ease;
+          scrollVel = current - prev;
           if (Math.abs(target - current) < 0.4) { current = target; scrollVel = 0; raf = null; }
-          window.scrollTo(0, current); if (window.ScrollTrigger) ScrollTrigger.update(); if (raf) raf = requestAnimationFrame(loop);
+          window.scrollTo(0, current);
+          if (window.ScrollTrigger) ScrollTrigger.update();
+          if (raf) raf = requestAnimationFrame(loop);
         }
         window.addEventListener("resize", () => { target = current = window.scrollY; });
         window.__syncScroll = () => { target = current = window.scrollY; };
-        document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener("click", (e) => { const el = document.querySelector(a.getAttribute("href")); if (!el) return; e.preventDefault(); target = Math.max(0, Math.min(maxScroll(), el.getBoundingClientRect().top + window.scrollY - 40)); if (!raf) raf = requestAnimationFrame(loop); }));
+        document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener("click", (e) => {
+          const el = document.querySelector(a.getAttribute("href")); if (!el) return; e.preventDefault();
+          target = Math.max(0, Math.min(maxScroll(), el.getBoundingClientRect().top + window.scrollY - 40));
+          if (!raf) raf = requestAnimationFrame(loop);
+        }));
       }
 
+      /* CURSOR + smear trail + orbit */
       const cur = document.querySelector(".cursor"), ring = document.querySelector(".cursor-ring"), orbit = document.getElementById("orbit");
       if (window.matchMedia("(hover: hover)").matches && !reduce) {
         let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my, ox = mx, oy = my;
@@ -625,12 +850,13 @@
           smears.forEach((s, i) => { s.x += (px - s.x)*0.35; s.y += (py - s.y)*0.35; s.el.style.transform = `translate(${s.x}px,${s.y}px) translate(-50%,-50%)`; s.el.style.opacity = Math.max(0, 0.4 - i*0.08); px = s.x; py = s.y; });
           requestAnimationFrame(loopC);
         })();
-        document.querySelectorAll("a, .rel-item, [data-cursor], button, [data-po-close], [data-co-close], .folder-head, .subfolder-head, .faq-q").forEach(el => {
+        document.querySelectorAll("a, .row, [data-cursor], button, [data-po-close]").forEach(el => {
           el.addEventListener("mouseenter", () => { ring.classList.add("big"); Sound.tick(); });
           el.addEventListener("mouseleave", () => ring.classList.remove("big"));
         });
       } else { cur.style.display = ring.style.display = orbit.style.display = "none"; }
 
+      /* HERO INTRO */
       function introHero() {
         const drifts = document.querySelectorAll(".stack .drift");
         if (reduce) { gsap.set(drifts, { y: 0 }); return; }
@@ -642,20 +868,50 @@
 
       if (!reduce && window.ScrollTrigger) {
         const stack = document.getElementById("stack");
-        window.addEventListener("mousemove", e => { const dx = (e.clientX / innerWidth - 0.5), dy = (e.clientY / innerHeight - 0.5); gsap.to(stack, { x: dx * 40, y: dy * 24, duration: 0.8, ease: "power3.out" }); });
-        gsap.utils.toArray(".stack .line").forEach((line, i) => { gsap.to(line, { xPercent: (i % 2 === 0 ? -6 : 6), ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } }); });
+        window.addEventListener("mousemove", e => {
+          const dx = (e.clientX / innerWidth - 0.5), dy = (e.clientY / innerHeight - 0.5);
+          gsap.to(stack, { x: dx * 40, y: dy * 24, duration: 0.8, ease: "power3.out" });
+        });
+
+        gsap.utils.toArray(".stack .line").forEach((line, i) => {
+          gsap.to(line, { xPercent: (i % 2 === 0 ? -6 : 6), ease: "none",
+            scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
+        });
         gsap.to(stack, { opacity: 0.25, ease: "none", scrollTrigger: { trigger: ".hero", start: "40% top", end: "bottom top", scrub: true } });
-        gsap.utils.toArray("[data-split-h]").forEach(h => { const letters = splitLetters(h, "sl"); gsap.fromTo(letters, { yPercent: 120, opacity: 0 }, { yPercent: 0, opacity: 1, ease: "power3.out", stagger: 0.03, scrollTrigger: { trigger: h, start: "top 90%" } }); });
-        gsap.utils.toArray(".reveal").forEach(el => { if (el.closest(".hero")) return; gsap.fromTo(el, { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 88%" } }); });
+
+        gsap.utils.toArray("[data-split-h]").forEach(h => {
+          const letters = splitLetters(h, "sl");
+          gsap.fromTo(letters, { yPercent: 120, opacity: 0 }, { yPercent: 0, opacity: 1, ease: "power3.out", stagger: 0.03,
+            scrollTrigger: { trigger: h, start: "top 90%" } });
+        });
+
+        gsap.utils.toArray(".reveal").forEach(el => {
+          if (el.closest(".hero")) return;
+          gsap.fromTo(el, { opacity: 0, y: 44 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 88%" } });
+        });
+
         gsap.utils.toArray(".shead .rule").forEach(r => gsap.fromTo(r, { scaleX: 0, transformOrigin: "left" }, { scaleX: 1, duration: 1, ease: "power2.out", scrollTrigger: { trigger: r, start: "top 92%" } }));
+
+        gsap.utils.toArray(".work .row").forEach((row) => {
+          gsap.fromTo(row.querySelector(".title"), { x: -30, opacity: 0 }, { x: 0, opacity: 1, ease: "power3.out",
+            scrollTrigger: { trigger: row, start: "top 92%", end: "top 60%", scrub: true } });
+        });
+
         const ab = document.querySelector(".about [data-words]");
         if (ab) {
           const html = ab.innerHTML; const tmp = document.createElement("div"); tmp.innerHTML = html; ab.innerHTML = "";
-          tmp.childNodes.forEach(node => { if (node.nodeType === 3) node.textContent.split(/(\s+)/).forEach(t => { if (!t.trim()) { ab.appendChild(document.createTextNode(t)); return; } const s=document.createElement("span"); s.className="w"; s.textContent=t; ab.appendChild(s); }); else { node.classList.add("w"); ab.appendChild(node); } });
+          tmp.childNodes.forEach(node => {
+            if (node.nodeType === 3) node.textContent.split(/(\s+)/).forEach(t => { if (!t.trim()) { ab.appendChild(document.createTextNode(t)); return; } const s=document.createElement("span"); s.className="w"; s.textContent=t; ab.appendChild(s); });
+            else { node.classList.add("w"); ab.appendChild(node); }
+          });
           gsap.fromTo(ab.querySelectorAll(".w"), { opacity: 0.15 }, { opacity: 1, ease: "none", stagger: 0.4, scrollTrigger: { trigger: ab, start: "top 80%", end: "bottom 60%", scrub: true } });
         }
-        gsap.utils.toArray("[data-count]").forEach(el => { const end = parseFloat(el.getAttribute("data-count")); const o={v:0}; ScrollTrigger.create({ trigger: el, start: "top 92%", once: true, onEnter: () => gsap.to(o, { v: end, duration: 1.2, ease: "power2.out", onUpdate: () => el.textContent = Math.round(o.v).toString().padStart(2,"0") }) }); });
 
+        gsap.utils.toArray("[data-count]").forEach(el => { const end = parseFloat(el.getAttribute("data-count")); const o={v:0};
+          ScrollTrigger.create({ trigger: el, start: "top 92%", once: true, onEnter: () => gsap.to(o, { v: end, duration: 1.2, ease: "power2.out", onUpdate: () => el.textContent = Math.round(o.v).toString().padStart(2,"0") }) }); });
+
+        /* RELEASES: nested expandable folders (works for .folder AND .subfolder) */
         gsap.utils.toArray(".folder, .subfolder").forEach(folder => {
           const head = folder.querySelector(":scope > .folder-head, :scope > .subfolder-head");
           const body = folder.querySelector(":scope > .folder-body, :scope > .subfolder-body");
@@ -665,54 +921,95 @@
             e.stopPropagation();
             const opening = !folder.classList.contains("open");
             folder.classList.toggle("open", opening);
-            gsap.to(body, { height: opening ? "auto" : 0, duration: 0.5, ease: "power3.inOut", onComplete: () => { if (window.ScrollTrigger) ScrollTrigger.refresh(true); } });
-            if (opening) { const items = body.querySelectorAll(":scope > .rel-item, :scope > .rel-empty, :scope > .subfolder"); gsap.fromTo(items, { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out", stagger: 0.06, delay: 0.05 }); }
+            gsap.to(body, { height: opening ? "auto" : 0, duration: 0.5, ease: "power3.inOut",
+              onComplete: () => { if (window.ScrollTrigger) ScrollTrigger.refresh(true); } });
+            if (opening) {
+              const items = body.querySelectorAll(":scope > .rel-item, :scope > .rel-empty, :scope > .subfolder");
+              gsap.fromTo(items, { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out", stagger: 0.06, delay: 0.05 });
+            }
             Sound.rowTap();
           });
         });
-        gsap.utils.toArray(".releases > .folder").forEach(f => gsap.fromTo(f, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", scrollTrigger: { trigger: f, start: "top 90%", onStart: () => Sound.rowTap() } }));
+        gsap.utils.toArray(".releases > .folder").forEach(f => gsap.fromTo(f, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out",
+          scrollTrigger: { trigger: f, start: "top 90%", onStart: () => Sound.rowTap() } }));
 
+        /* FAQ: expand/collapse accordion */
         gsap.utils.toArray("[data-faq]").forEach(item => {
-          const q = item.querySelector(".faq-q"); const a = item.querySelector(".faq-a");
+          const q = item.querySelector(".faq-q");
+          const a = item.querySelector(".faq-a");
           gsap.set(a, { height: 0 });
           q.addEventListener("click", () => {
             const opening = !item.classList.contains("open");
             item.classList.toggle("open", opening);
-            gsap.to(a, { height: opening ? "auto" : 0, duration: 0.45, ease: "power3.inOut", onComplete: () => { if (window.ScrollTrigger) ScrollTrigger.refresh(true); } });
+            gsap.to(a, { height: opening ? "auto" : 0, duration: 0.45, ease: "power3.inOut",
+              onComplete: () => { if (window.ScrollTrigger) ScrollTrigger.refresh(true); } });
             Sound.rowTap();
           });
         });
 
+        /* TIMELINE */
         const tl = document.getElementById("tl"), tfill = document.getElementById("tfill"), trows = gsap.utils.toArray(".timeline .trow");
         if (tl && tfill) {
-          ScrollTrigger.create({ trigger: tl, start: "top 70%", end: "bottom 75%", scrub: 0.5, onUpdate: self => { tfill.style.height = (self.progress * 100) + "%"; const passed = Math.round(self.progress * trows.length + 0.2); trows.forEach((r, i) => r.classList.toggle("on", i < passed)); } });
+          ScrollTrigger.create({
+            trigger: tl, start: "top 70%", end: "bottom 75%", scrub: 0.5,
+            onUpdate: self => {
+              tfill.style.height = (self.progress * 100) + "%";
+              const passed = Math.round(self.progress * trows.length + 0.2);
+              trows.forEach((r, i) => r.classList.toggle("on", i < passed));
+            }
+          });
           trows.forEach(row => {
-            const dot = row.querySelector(".tdot"), date = row.querySelector(".tdate"), h = row.querySelector("h4"), p = row.querySelector("p");
+            const dot = row.querySelector(".tdot");
+            const date = row.querySelector(".tdate");
+            const h = row.querySelector("h4");
+            const p = row.querySelector("p");
             const words = h.textContent.split(/(\s+)/);
             h.innerHTML = words.map(w => w.trim() ? `<span style="display:inline-block;overflow:hidden;vertical-align:top"><span class="hw" style="display:inline-block">${w}</span></span>` : " ").join("");
             const hw = h.querySelectorAll(".hw");
             const settleWords = () => gsap.set(hw, { yPercent: 0, opacity: 1, clearProps: "" });
-            const tlIn = gsap.timeline({ onStart: () => Sound.rowTap(), onComplete: settleWords, scrollTrigger: { trigger: row, start: "top 88%", once: true } });
-            tlIn.fromTo(dot, { scale: 0 }, { scale: 1, duration: 0.5, ease: "back.out(3.5)" }, 0)
+            const tlIn = gsap.timeline({ onStart: () => Sound.rowTap(), onComplete: settleWords,
+              scrollTrigger: { trigger: row, start: "top 88%", once: true } });
+            tlIn
+              .fromTo(dot, { scale: 0 }, { scale: 1, duration: 0.5, ease: "back.out(3.5)" }, 0)
               .fromTo(date, { x: -24, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0.05)
               .fromTo(hw, { yPercent: 115, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.6, ease: "expo.out", stagger: 0.05 }, 0.12)
               .fromTo(p, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 0.28);
+
             row.addEventListener("mouseenter", () => {
               gsap.to(row, { paddingLeft: 60, duration: 0.4, ease: "power3.out" });
               gsap.to(dot, { scale: 1.5, duration: 0.4, ease: "back.out(3)" });
-              gsap.to(hw, { yPercent: -14, opacity: 1, duration: 0.35, ease: "back.out(2)", stagger: { each: 0.03, from: "start" }, yoyo: true, repeat: 1, onComplete: () => gsap.set(hw, { yPercent: 0, opacity: 1 }) });
+              gsap.to(hw, { yPercent: -14, opacity: 1, duration: 0.35, ease: "back.out(2)", stagger: { each: 0.03, from: "start" }, yoyo: true, repeat: 1,
+                onComplete: () => gsap.set(hw, { yPercent: 0, opacity: 1 }) });
               Sound.tick();
             });
-            row.addEventListener("mouseleave", () => { gsap.to(row, { paddingLeft: 44, duration: 0.5, ease: "power3.out" }); gsap.to(dot, { scale: 1, duration: 0.5, ease: "power3.out" }); });
+            row.addEventListener("mouseleave", () => {
+              gsap.to(row, { paddingLeft: 44, duration: 0.5, ease: "power3.out" });
+              gsap.to(dot, { scale: 1, duration: 0.5, ease: "power3.out" });
+            });
           });
         }
 
         const emailWrap = document.querySelector("[data-email]");
-        if (emailWrap) { const letters = splitLetters(emailWrap, "el"); gsap.fromTo(letters, { yPercent: 120 }, { yPercent: 0, ease: "expo.out", stagger: 0.02, scrollTrigger: { trigger: ".contact", start: "top 75%" } }); const link = emailWrap.closest("a"); link.addEventListener("mouseenter", () => gsap.to(letters, { yPercent: -12, stagger: { each: 0.02, from: "center" }, duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 })); }
-        const ytWrap = document.querySelector("[data-yt]");
-        if (ytWrap) { const letters = splitLetters(ytWrap, "el"); gsap.fromTo(letters, { yPercent: 120 }, { yPercent: 0, ease: "expo.out", stagger: 0.015, scrollTrigger: { trigger: ".contact", start: "top 72%" } }); const link = ytWrap.closest("a"); link.addEventListener("mouseenter", () => gsap.to(letters, { yPercent: -12, stagger: { each: 0.015, from: "center" }, duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 })); }
+        if (emailWrap) {
+          const letters = splitLetters(emailWrap, "el");
+          gsap.fromTo(letters, { yPercent: 120 }, { yPercent: 0, ease: "expo.out", stagger: 0.02, scrollTrigger: { trigger: ".contact", start: "top 75%" } });
+          const link = emailWrap.closest("a");
+          link.addEventListener("mouseenter", () => gsap.to(letters, { yPercent: -12, stagger: { each: 0.02, from: "center" }, duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }));
+        }
 
-        gsap.utils.toArray("[data-marq]").forEach(run => { const tween = gsap.to(run, { xPercent: -50, duration: 24, ease: "none", repeat: -1 }); ScrollTrigger.create({ onUpdate: () => { tween.timeScale(scrollDir * (1 + Math.min(Math.abs(scrollVel) / 14, 6))); }}); gsap.to(run.querySelectorAll(".star"), { rotate: 360, duration: 6, ease: "none", repeat: -1 }); });
+        const ytWrap = document.querySelector("[data-yt]");
+        if (ytWrap) {
+          const letters = splitLetters(ytWrap, "el");
+          gsap.fromTo(letters, { yPercent: 120 }, { yPercent: 0, ease: "expo.out", stagger: 0.015, scrollTrigger: { trigger: ".contact", start: "top 72%" } });
+          const link = ytWrap.closest("a");
+          link.addEventListener("mouseenter", () => gsap.to(letters, { yPercent: -12, stagger: { each: 0.015, from: "center" }, duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }));
+        }
+
+        gsap.utils.toArray("[data-marq]").forEach(run => {
+          const tween = gsap.to(run, { xPercent: -50, duration: 24, ease: "none", repeat: -1 });
+          ScrollTrigger.create({ onUpdate: () => { tween.timeScale(scrollDir * (1 + Math.min(Math.abs(scrollVel) / 14, 6))); }});
+          gsap.to(run.querySelectorAll(".star"), { rotate: 360, duration: 6, ease: "none", repeat: -1 });
+        });
       } else if (reduce) {
         gsap.set(".reveal", { opacity: 1, y: 0 });
         document.querySelectorAll(".folder, .subfolder").forEach(f => f.classList.add("open"));
@@ -726,35 +1023,152 @@
 
       if (!reduce) document.querySelectorAll("[data-scramble]").forEach((el, i) => setTimeout(() => scramble(el), 2600 + i * 150));
 
-      if (!reduce && window.ScrollTrigger) { const pbar = document.createElement("div"); pbar.style.cssText = "position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:95;"; document.body.appendChild(pbar); ScrollTrigger.create({ start: 0, end: "max", onUpdate: self => { pbar.style.width = (self.progress * 100) + "%"; } }); }
-
-      if (!reduce) {
-        const shapes = [ { t: "circle", x: "8%", y: "22%", s: 90 }, { t: "square", x: "82%", y: "60%", s: 70 }, { t: "circle", x: "70%", y: "12%", s: 50 }, { t: "square", x: "16%", y: "78%", s: 110 } ];
-        shapes.forEach((sh, i) => { const d = document.createElement("div"); d.style.cssText = `position:absolute;left:${sh.x};top:${sh.y};width:${sh.s}px;height:${sh.s}px;border:1px solid var(--accent);opacity:0.35;pointer-events:none;z-index:0;${sh.t==="circle"?"border-radius:50%":""}`; document.querySelector("main").appendChild(d); gsap.to(d, { rotation: 360, duration: 20 + i*6, ease: "none", repeat: -1 }); gsap.to(d, { y: (i%2?60:-60), ease: "none", scrollTrigger: { start: 0, end: "max", scrub: 1.5 } }); gsap.to(d, { scale: 1.3, duration: 4 + i, ease: "sine.inOut", repeat: -1, yoyo: true }); });
+      /* WORK hover: title per-letter ripple */
+      if (!reduce && window.matchMedia("(hover: hover)").matches) {
+        document.querySelectorAll(".work .row").forEach(row => {
+          const t = row.querySelector(".title");
+          const letters = splitLetters(t, "tl");
+          row.addEventListener("mouseenter", () => {
+            gsap.fromTo(letters, { yPercent: 0 }, { yPercent: -22, duration: 0.4, ease: "back.out(2.2)", stagger: { each: 0.03, from: "start" }, yoyo: true, repeat: 1 });
+          });
+        });
       }
-      if (!reduce) { gsap.utils.toArray("footer span").forEach((s, i) => { gsap.to(s, { y: -4, duration: 2 + i*0.3, ease: "sine.inOut", repeat: -1, yoyo: true, delay: i*0.2 }); }); }
+
+      /* Scroll progress bar */
+      if (!reduce && window.ScrollTrigger) {
+        const pbar = document.createElement("div");
+        pbar.style.cssText = "position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:95;";
+        document.body.appendChild(pbar);
+        ScrollTrigger.create({ start: 0, end: "max", onUpdate: self => { pbar.style.width = (self.progress * 100) + "%"; } });
+      }
+
+      /* Floating drifting blue outline shapes */
+      if (!reduce) {
+        const shapes = [
+          { t: "circle", x: "8%", y: "22%", s: 90 },
+          { t: "square", x: "82%", y: "60%", s: 70 },
+          { t: "circle", x: "70%", y: "12%", s: 50 },
+          { t: "square", x: "16%", y: "78%", s: 110 },
+        ];
+        shapes.forEach((sh, i) => {
+          const d = document.createElement("div");
+          d.style.cssText = `position:absolute;left:${sh.x};top:${sh.y};width:${sh.s}px;height:${sh.s}px;border:1px solid var(--accent);opacity:0.35;pointer-events:none;z-index:0;${sh.t==="circle"?"border-radius:50%":""}`;
+          document.querySelector("main").appendChild(d);
+          gsap.to(d, { rotation: 360, duration: 20 + i*6, ease: "none", repeat: -1 });
+          gsap.to(d, { y: (i%2?60:-60), ease: "none", scrollTrigger: { start: 0, end: "max", scrub: 1.5 } });
+          gsap.to(d, { scale: 1.3, duration: 4 + i, ease: "sine.inOut", repeat: -1, yoyo: true });
+        });
+      }
+
+      /* Work numbers count up */
+      if (!reduce && window.ScrollTrigger) {
+        gsap.utils.toArray(".work .row .rn").forEach(rn => {
+          const val = parseInt(rn.textContent, 10); if (isNaN(val)) return;
+          const o = { v: 0 };
+          ScrollTrigger.create({ trigger: rn, start: "top 95%", once: true,
+            onEnter: () => gsap.to(o, { v: val, duration: 0.8, ease: "power2.out", onUpdate: () => rn.textContent = Math.round(o.v).toString().padStart(2,"0") }) });
+        });
+      }
+
+      /* Footer wave */
+      if (!reduce) {
+        gsap.utils.toArray("footer span").forEach((s, i) => {
+          gsap.to(s, { y: -4, duration: 2 + i*0.3, ease: "sine.inOut", repeat: -1, yoyo: true, delay: i*0.2 });
+        });
+      }
+
+      /* Magnetic */
       if (!reduce && window.matchMedia("(pointer: fine)").matches) {
         document.querySelectorAll(".n-links a, .socials a, .email, .yt-btn, .scrolldn .arrow").forEach(el => {
           const strength = el.classList.contains("email") ? 0.15 : (el.classList.contains("yt-btn") ? 0.25 : 0.4);
-          el.addEventListener("mousemove", e => { const r = el.getBoundingClientRect(); gsap.to(el, { x:(e.clientX-(r.left+r.width/2))*strength, y:(e.clientY-(r.top+r.height/2))*strength, duration:0.3, ease:"power3.out" }); });
+          el.addEventListener("mousemove", e => { const r = el.getBoundingClientRect();
+            gsap.to(el, { x:(e.clientX-(r.left+r.width/2))*strength, y:(e.clientY-(r.top+r.height/2))*strength, duration:0.3, ease:"power3.out" }); });
           el.addEventListener("mouseleave", () => gsap.to(el, { x:0, y:0, duration:0.6, ease:"elastic.out(1,0.4)" }));
         });
       }
-      document.querySelectorAll("a, button, .rel-item, .folder-head, .subfolder-head, .faq-q").forEach(el => el.addEventListener("click", () => { Sound.unlock(); Sound.click(); }));
 
+      /* Mechanical click on all links/buttons/rows */
+      document.querySelectorAll("a, button, .rel-item, .folder-head, .subfolder-head").forEach(el => el.addEventListener("click", () => { Sound.unlock(); Sound.click(); }));
+
+      /* ============================================================
+         PRODUCT OVERLAY — 6 products (KARBON/KLOUD × Mass/Base/Drift)
+         ============================================================ */
       const PRODUCTS = {
-        "karbon-hoodie": { num: "KARBON / 01", title: "Mass", sub: "Hoodie · KARBON — The Anchor · Drop 01", color: "#1a1712", hero: "KARBON MASS", gallery: ["Front","Back","Detail","Hood"], images: ["images/karbon-mass-hero.png","images/karbon-mass-1.png","images/karbon-mass-2.png","images/karbon-mass-3.png"], desc: ["The anchor of the drop. Built on a 500 g/m² heavyweight fleece — dense, structured, and substantial in the hand. Made to hold its shape and be worn for years, not seasons.","Oversized fit, plush brushed interior, clean considered exterior. The KALMERA mark sits centred on the chest, printed to order. Made when you order it, shipped worldwide — nothing wasted."], specs: [["Weight","500 g/m² · 14.7 oz"],["Fabric","Heavyweight fleece"],["Fit","Oversized"],["Mark","Centre chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£50 · free shipping"],["Drop","01 — Oct 2026"]] },
-        "karbon-tee": { num: "KARBON / 02", title: "Base", sub: "Tee · KARBON — The Anchor · Drop 01", color: "#1a1712", hero: "KARBON BASE", gallery: ["Front","Back","Detail","Collar"], images: ["images/karbon-base-hero.png","images/karbon-base-1.png","images/karbon-base-2.png","images/karbon-base-3.png"], desc: ["The everyday half of KARBON. A boxy, oversized tee at a genuine 400 g/m² — heavyweight for a tee, with real structure and a clean drape.","A small KALMERA mark on the left chest, printed to order. Shipped worldwide. Built to sit right and last."], specs: [["Weight","400 g/m² · 11.8 oz"],["Fabric","Heavyweight cotton"],["Fit","Boxy oversized"],["Mark","Left chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£30 · free shipping"],["Drop","01 — Oct 2026"]] },
-        "karbon-sweatpants": { num: "KARBON / 03", title: "Drift", sub: "Sweatpants · KARBON — The Anchor · Drop 01", color: "#1a1712", hero: "KARBON DRIFT", gallery: ["Front","Back","Detail","Waistband"], images: ["images/karbon-drift-hero.png","images/karbon-drift-1.png","images/karbon-drift-2.png","images/karbon-drift-3.png"], desc: ["The match to the hoodie. Heavyweight 420 g/m² sweatpants with a straight-leg cut — a touch lighter than the hoodie by design, so they move.","The KALMERA mark runs vertically down the lower leg, printed to order. Shipped worldwide. The full KARBON set, head to toe."], specs: [["Weight","420 g/m² · 12.4 oz"],["Fabric","Heavyweight"],["Fit","Straight leg"],["Mark","Vertical, lower leg"],["Sizes","S–XL"],["Made","To order · ships worldwide"],["Price","£40 · free shipping"],["Drop","01 — Oct 2026"]] },
-        "kloud-hoodie": { num: "KLOUD / 01", title: "Mass", sub: "Hoodie · KLOUD — The Counterpoint · Drop 01", color: "#8a8175", hero: "KLOUD MASS", gallery: ["Front","Back","Detail","Hood"], images: null, desc: ["The counterpoint. The same 500 g/m² heavyweight fleece and oversized cut as KARBON, in its lighter register — the substantial feel of a proper premium hoodie.","Plush brushed interior, considered exterior, KALMERA mark centred on the chest and printed to order. Made when you order it, shipped worldwide."], specs: [["Weight","500 g/m² · 14.7 oz"],["Fabric","Heavyweight fleece"],["Fit","Oversized"],["Mark","Centre chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£50 · free shipping"],["Drop","01 — Oct 2026"]] },
-        "kloud-tee": { num: "KLOUD / 02", title: "Base", sub: "Tee · KLOUD — The Counterpoint · Drop 01", color: "#8a8175", hero: "KLOUD BASE", gallery: ["Front","Back","Detail","Collar"], images: null, desc: ["The everyday half of KLOUD. A boxy, oversized 400 g/m² tee in the lighter register — clean, structured, and built to be worn on repeat.","A small KALMERA mark on the left chest, printed to order. Shipped worldwide."], specs: [["Weight","400 g/m² · 11.8 oz"],["Fabric","Heavyweight cotton"],["Fit","Boxy oversized"],["Mark","Left chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£30 · free shipping"],["Drop","01 — Oct 2026"]] },
-        "kloud-sweatpants": { num: "KLOUD / 03", title: "Drift", sub: "Sweatpants · KLOUD — The Counterpoint · Drop 01", color: "#8a8175", hero: "KLOUD DRIFT", gallery: ["Front","Back","Detail","Waistband"], images: null, desc: ["The match to the KLOUD hoodie. Heavyweight 420 g/m² straight-leg sweatpants in the lighter register — the full KLOUD set, head to toe.","The KALMERA mark runs vertically down the lower leg, printed to order. Shipped worldwide."], specs: [["Weight","420 g/m² · 12.4 oz"],["Fabric","Heavyweight"],["Fit","Straight leg"],["Mark","Vertical, lower leg"],["Sizes","S–XL"],["Made","To order · ships worldwide"],["Price","£40 · free shipping"],["Drop","01 — Oct 2026"]] }
+        "karbon-hoodie": {
+          num: "KARBON / 01", title: "Mass", sub: "Hoodie · KARBON — The Anchor · Drop 01", color: "#1a1712",
+          hero: "KARBON MASS", gallery: ["Front", "Back", "Detail", "Hood"],
+          images: ["images/karbon-mass-hero.png","images/karbon-mass-1.png","images/karbon-mass-2.png","images/karbon-mass-3.png"],
+          desc: [
+            "The anchor of the drop. Built on a 500 g/m² heavyweight fleece — dense, structured, and substantial in the hand. Made to hold its shape and be worn for years, not seasons.",
+            "Oversized fit, plush brushed interior, clean considered exterior. The KALMERA mark sits centred on the chest, printed to order. Made when you order it, shipped worldwide — nothing wasted."
+          ],
+          specs: [["Weight","500 g/m² · 14.7 oz"],["Fabric","Heavyweight fleece"],["Fit","Oversized"],["Mark","Centre chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£50 · free shipping"],["Drop","01 — Oct 2026"]]
+        },
+        "karbon-tee": {
+          num: "KARBON / 02", title: "Base", sub: "Tee · KARBON — The Anchor · Drop 01", color: "#1a1712",
+          hero: "KARBON BASE", gallery: ["Front", "Back", "Detail", "Collar"],
+          images: ["images/karbon-base-hero.png","images/karbon-base-1.png","images/karbon-base-2.png","images/karbon-base-3.png"],
+          desc: [
+            "The everyday half of KARBON. A boxy, oversized tee at a genuine 400 g/m² — heavyweight for a tee, with real structure and a clean drape.",
+            "A small KALMERA mark on the left chest, printed to order. Shipped worldwide. Built to sit right and last."
+          ],
+          specs: [["Weight","400 g/m² · 11.8 oz"],["Fabric","Heavyweight cotton"],["Fit","Boxy oversized"],["Mark","Left chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£30 · free shipping"],["Drop","01 — Oct 2026"]]
+        },
+        "karbon-sweatpants": {
+          num: "KARBON / 03", title: "Drift", sub: "Sweatpants · KARBON — The Anchor · Drop 01", color: "#1a1712",
+          hero: "KARBON DRIFT", gallery: ["Front", "Back", "Detail", "Waistband"],
+          images: ["images/karbon-drift-hero.png","images/karbon-drift-1.png","images/karbon-drift-2.png","images/karbon-drift-3.png"],
+          desc: [
+            "The match to the hoodie. Heavyweight 420 g/m² sweatpants with a straight-leg cut — a touch lighter than the hoodie by design, so they move.",
+            "The KALMERA mark runs vertically down the lower leg, printed to order. Shipped worldwide. The full KARBON set, head to toe."
+          ],
+          specs: [["Weight","420 g/m² · 12.4 oz"],["Fabric","Heavyweight"],["Fit","Straight leg"],["Mark","Vertical, lower leg"],["Sizes","S–XL"],["Made","To order · ships worldwide"],["Price","£40 · free shipping"],["Drop","01 — Oct 2026"]]
+        },
+        "kloud-hoodie": {
+          num: "KLOUD / 01", title: "Mass", sub: "Hoodie · KLOUD — The Counterpoint · Drop 01", color: "#8a8175",
+          hero: "KLOUD MASS", gallery: ["Front", "Back", "Detail", "Hood"], images: null,
+          desc: [
+            "The counterpoint. The same 500 g/m² heavyweight fleece and oversized cut as KARBON, in its lighter register — the substantial feel of a proper premium hoodie.",
+            "Plush brushed interior, considered exterior, KALMERA mark centred on the chest and printed to order. Made when you order it, shipped worldwide."
+          ],
+          specs: [["Weight","500 g/m² · 14.7 oz"],["Fabric","Heavyweight fleece"],["Fit","Oversized"],["Mark","Centre chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£50 · free shipping"],["Drop","01 — Oct 2026"]]
+        },
+        "kloud-tee": {
+          num: "KLOUD / 02", title: "Base", sub: "Tee · KLOUD — The Counterpoint · Drop 01", color: "#8a8175",
+          hero: "KLOUD BASE", gallery: ["Front", "Back", "Detail", "Collar"], images: null,
+          desc: [
+            "The everyday half of KLOUD. A boxy, oversized 400 g/m² tee in the lighter register — clean, structured, and built to be worn on repeat.",
+            "A small KALMERA mark on the left chest, printed to order. Shipped worldwide."
+          ],
+          specs: [["Weight","400 g/m² · 11.8 oz"],["Fabric","Heavyweight cotton"],["Fit","Boxy oversized"],["Mark","Left chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£30 · free shipping"],["Drop","01 — Oct 2026"]]
+        },
+        "kloud-sweatpants": {
+          num: "KLOUD / 03", title: "Drift", sub: "Sweatpants · KLOUD — The Counterpoint · Drop 01", color: "#8a8175",
+          hero: "KLOUD DRIFT", gallery: ["Front", "Back", "Detail", "Waistband"], images: null,
+          desc: [
+            "The match to the KLOUD hoodie. Heavyweight 420 g/m² straight-leg sweatpants in the lighter register — the full KLOUD set, head to toe.",
+            "The KALMERA mark runs vertically down the lower leg, printed to order. Shipped worldwide."
+          ],
+          specs: [["Weight","420 g/m² · 12.4 oz"],["Fabric","Heavyweight"],["Fit","Straight leg"],["Mark","Vertical, lower leg"],["Sizes","S–XL"],["Made","To order · ships worldwide"],["Price","£40 · free shipping"],["Drop","01 — Oct 2026"]]
+        }
       };
 
       const SIZE_GUIDES = {
-        hoodie: { cols: ["Size","Chest (cm)","Length (cm)","Sleeve (cm)"], rows: [["S","110","68","60"],["M","116","70","61"],["L","122","72","62"],["XL","128","74","63"],["2XL","134","76","64"]], note: "Oversized fit. Garment measurements, laid flat. Placeholder — confirm against Tapstitch RW0035." },
-        tee: { cols: ["Size","Chest (cm)","Length (cm)"], rows: [["S","106","70"],["M","112","72"],["L","118","74"],["XL","124","76"],["2XL","130","78"]], note: "Boxy oversized fit. Garment measurements, laid flat. Placeholder — confirm against Tapstitch RT0080." },
-        sweatpants: { cols: ["Size","Waist (cm)","Inseam (cm)","Length (cm)"], rows: [["S","68","74","98"],["M","72","75","100"],["L","76","76","102"],["XL","80","77","104"]], note: "Straight-leg fit. Garment measurements, laid flat. Placeholder — confirm against Tapstitch RK0009." }
+        hoodie: {
+          cols: ["Size", "Chest (cm)", "Length (cm)", "Sleeve (cm)"],
+          rows: [["S","110","68","60"],["M","116","70","61"],["L","122","72","62"],["XL","128","74","63"],["2XL","134","76","64"]],
+          note: "Oversized fit. Measurements are of the garment, laid flat. Placeholder values — confirm against Tapstitch RW0035."
+        },
+        tee: {
+          cols: ["Size", "Chest (cm)", "Length (cm)"],
+          rows: [["S","106","70"],["M","112","72"],["L","118","74"],["XL","124","76"],["2XL","130","78"]],
+          note: "Boxy oversized fit. Garment measurements, laid flat. Placeholder values — confirm against Tapstitch RT0080."
+        },
+        sweatpants: {
+          cols: ["Size", "Waist (cm)", "Inseam (cm)", "Length (cm)"],
+          rows: [["S","68","74","98"],["M","72","75","100"],["L","76","76","102"],["XL","80","77","104"]],
+          note: "Straight-leg fit. Garment measurements, laid flat. Placeholder values — confirm against Tapstitch RK0009."
+        }
       };
       const garmentOf = (key) => key.includes("hoodie") ? "hoodie" : key.includes("tee") ? "tee" : "sweatpants";
 
@@ -768,55 +1182,133 @@
       let currentKey = null;
 
       const ctaWrap = document.querySelector("[data-cta]");
-      if (ctaWrap && !reduce) { const ctaLetters = splitLetters(ctaWrap, "el"); const ctaLink = ctaWrap.closest("a"); ctaLink.addEventListener("mouseenter", () => gsap.to(ctaLetters, { yPercent: -12, stagger: { each: 0.015, from: "center" }, duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 })); }
+      if (ctaWrap && !reduce) {
+        const ctaLetters = splitLetters(ctaWrap, "el");
+        const ctaLink = ctaWrap.closest("a");
+        ctaLink.addEventListener("mouseenter", () => gsap.to(ctaLetters, { yPercent: -12, stagger: { each: 0.015, from: "center" }, duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }));
+      }
 
       function openProduct(key) {
         const d = PRODUCTS[key]; if (!d) return;
         currentKey = key;
-        poNum.textContent = d.num; poTitle.textContent = d.title; poSub.textContent = d.sub; poHeroLabel.textContent = d.hero;
-        const subj = encodeURIComponent(`Reserve — ${d.hero}`), body = encodeURIComponent(`I'd like to reserve the ${d.hero} (${d.sub}). Let me know when Drop 01 is available.`);
+        poNum.textContent = d.num;
+        poTitle.textContent = d.title;
+        poSub.textContent = d.sub;
+        poHeroLabel.textContent = d.hero;
+        const subj = encodeURIComponent(`Reserve — ${d.hero}`);
+        const body = encodeURIComponent(`I'd like to reserve the ${d.hero} (${d.sub}). Let me know when Drop 01 is available.`);
         poCta.href = `mailto:kalmera.team@gmail.com?subject=${subj}&body=${body}`;
         const imgs = d.images || [];
         poHero.style.background = `linear-gradient(150deg, ${d.color}, #05040a)`;
         poHero.querySelectorAll("img").forEach(n => n.remove());
-        if (imgs[0]) { const im = new Image(); im.src = imgs[0]; im.alt = d.hero; im.onerror = () => im.remove(); poHero.insertBefore(im, poHero.firstChild); }
-        poGallery.innerHTML = d.gallery.map((g, i) => `<div class="g" style="background:linear-gradient(150deg, ${d.color}, #0b0a0f)"><span>${g}</span></div>`).join("");
-        gsap.utils.toArray(poGallery.children).forEach((cell, i) => { const src = imgs[i + 1]; if (!src) return; const im = new Image(); im.src = src; im.alt = `${d.hero} — ${d.gallery[i]}`; im.onerror = () => im.remove(); cell.insertBefore(im, cell.firstChild); });
+        if (imgs[0]) {
+          const im = new Image();
+          im.src = imgs[0]; im.alt = d.hero;
+          im.onerror = () => im.remove();
+          poHero.insertBefore(im, poHero.firstChild);
+        }
+        poGallery.innerHTML = d.gallery.map((g, i) =>
+          `<div class="g" style="background:linear-gradient(150deg, ${d.color}, #0b0a0f)"><span>${g}</span></div>`).join("");
+        gsap.utils.toArray(poGallery.children).forEach((cell, i) => {
+          const src = imgs[i + 1];
+          if (!src) return;
+          const im = new Image();
+          im.src = src; im.alt = `${d.hero} — ${d.gallery[i]}`;
+          im.onerror = () => im.remove();
+          cell.insertBefore(im, cell.firstChild);
+        });
         poDesc.innerHTML = d.desc.map(p => `<p>${p}</p>`).join("");
         poSpecs.innerHTML = d.specs.map(s => `<div class="sr"><span>${s[0]}</span><b>${s[1]}</b></div>`).join("");
         const sg = SIZE_GUIDES[garmentOf(key)];
-        if (sg) { poSizeBody.innerHTML = `<table><thead><tr>${sg.cols.map(c => `<th>${c}</th>`).join("")}</tr></thead><tbody>${sg.rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table><div class="sg-note">${sg.note}</div>`; }
+        if (sg) {
+          poSizeBody.innerHTML =
+            `<table><thead><tr>${sg.cols.map(c => `<th>${c}</th>`).join("")}</tr></thead>` +
+            `<tbody>${sg.rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>` +
+            `<div class="sg-note">${sg.note}</div>`;
+        }
         po.classList.add("open"); po.setAttribute("aria-hidden", "false");
-        document.body.classList.add("locked"); scrollPaused = true; panel.scrollTop = 0; Sound.open();
-        if (!reduce) { const items = panel.querySelectorAll(".po-num, .po-title, .po-sub, .po-hero, .po-gallery, .po-desc, .po-specs, .po-cta"); gsap.fromTo(items, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.06, delay: 0.25 }); }
+        document.body.classList.add("locked");
+        scrollPaused = true;
+        panel.scrollTop = 0;
+        Sound.open();
+        if (!reduce) {
+          const items = panel.querySelectorAll(".po-num, .po-title, .po-sub, .po-hero, .po-gallery, .po-desc, .po-specs, .po-cta");
+          gsap.fromTo(items, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.06, delay: 0.25 });
+        }
       }
-      function closeProduct() { po.classList.remove("open"); po.setAttribute("aria-hidden", "true"); document.body.classList.remove("locked"); scrollPaused = false; if (window.__syncScroll) window.__syncScroll(); }
-      document.querySelectorAll(".rel-item[data-product]").forEach(item => { item.addEventListener("click", (e) => { e.stopPropagation(); openProduct(item.getAttribute("data-product")); }); });
-      document.querySelectorAll("[data-po-close]").forEach(el => el.addEventListener("click", closeProduct));
+      function closeProduct() {
+        po.classList.remove("open"); po.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("locked");
+        scrollPaused = false;
+        if (window.__syncScroll) window.__syncScroll();
+      }
 
-      /* ---------- BASKET + CHECKOUT (Stripe) ---------- */
+      document.querySelectorAll(".rel-item[data-product]").forEach(item => {
+        item.addEventListener("click", (e) => { e.stopPropagation(); openProduct(item.getAttribute("data-product")); });
+      });
+      document.querySelectorAll("[data-po-close]").forEach(el => el.addEventListener("click", closeProduct));
+      document.addEventListener("keydown", e => { if (e.key === "Escape") closeProduct(); });
+
+      /* ============================================================
+         BASKET + CHECKOUT
+         ============================================================ */
       const co = document.getElementById("co");
       const coPanel = co.querySelector(".co-panel");
       const coItems = document.getElementById("coItems");
-      const coSubtotal = document.getElementById("coSubtotal"), coTotal = document.getElementById("coTotal"), coPay = document.getElementById("coPay");
+      const coSubtotal = document.getElementById("coSubtotal"), coTotal = document.getElementById("coTotal"),
+            coPay = document.getElementById("coPay");
       const coShip = document.getElementById("coShip"), coShipLine = document.getElementById("coShipLine");
       const cartBtn = document.getElementById("cartBtn"), cartCount = document.getElementById("cartCount");
       let basket = [];
       let shipMethod = "Standard", shipCost = 0;
+
       const specValue = (d, label) => { const row = d.specs.find(s => s[0] === label); return row ? row[1] : ""; };
       const parsePrice = (str) => { const m = String(str).match(/£\s*([\d.]+)/); return m ? parseFloat(m[1]) : 0; };
       const SIZE_ORDER = ["XS","S","M","L","XL","2XL","3XL"];
-      function expandSizes(range) { const m = String(range).match(/([0-9]?X?[SML]+)\s*[–-]\s*([0-9]?X?[SML]+)/i); if (!m) return ["S","M","L","XL"]; const a = SIZE_ORDER.indexOf(m[1].toUpperCase()), b = SIZE_ORDER.indexOf(m[2].toUpperCase()); if (a === -1 || b === -1) return ["S","M","L","XL"]; return SIZE_ORDER.slice(a, b + 1); }
+      function expandSizes(range) {
+        const m = String(range).match(/([0-9]?X?[SML]+)\s*[–-]\s*([0-9]?X?[SML]+)/i);
+        if (!m) return ["S","M","L","XL"];
+        const a = SIZE_ORDER.indexOf(m[1].toUpperCase()), b = SIZE_ORDER.indexOf(m[2].toUpperCase());
+        if (a === -1 || b === -1) return ["S","M","L","XL"];
+        return SIZE_ORDER.slice(a, b + 1);
+      }
       const money = (n) => "£" + n.toFixed(n % 1 ? 2 : 0);
       const unitPrice = (key) => parsePrice(specValue(PRODUCTS[key], "Price"));
-      function updateCartBadge() { const n = basket.reduce((s, i) => s + i.qty, 0); cartCount.textContent = n; cartBtn.classList.toggle("has", n > 0); if (n > 0) { cartBtn.classList.remove("bump"); void cartBtn.offsetWidth; cartBtn.classList.add("bump"); } }
+
+      function updateCartBadge() {
+        const n = basket.reduce((s, i) => s + i.qty, 0);
+        cartCount.textContent = n;
+        cartBtn.classList.toggle("has", n > 0);
+        if (n > 0) { cartBtn.classList.remove("bump"); void cartBtn.offsetWidth; cartBtn.classList.add("bump"); }
+      }
+
       function renderBasket() {
         co.classList.toggle("has-items", basket.length > 0);
         coItems.innerHTML = basket.map((it, idx) => {
-          const d = PRODUCTS[it.key]; const sizes = expandSizes(specValue(d, "Sizes")); const hero = (d.images || [])[0];
-          const thumb = hero ? `<div class="co-thumb"><img src="${hero}" alt="${d.hero}" onerror="this.remove()" style="background:linear-gradient(150deg,${d.color},#05040a)"></div>` : `<div class="co-thumb" style="background:linear-gradient(150deg,${d.color},#05040a)"></div>`;
+          const d = PRODUCTS[it.key];
+          const sizes = expandSizes(specValue(d, "Sizes"));
+          const hero = (d.images || [])[0];
+          const thumb = hero
+            ? `<div class="co-thumb"><img src="${hero}" alt="${d.hero}" onerror="this.remove()" style="background:linear-gradient(150deg,${d.color},#05040a)"></div>`
+            : `<div class="co-thumb" style="background:linear-gradient(150deg,${d.color},#05040a)"></div>`;
           const sizeOpts = sizes.map(s => `<option${s === it.size ? " selected" : ""}>${s}</option>`).join("");
-          return `<div class="co-item">${thumb}<div><div class="co-nm">${d.title} — ${d.sub.split(" · ")[0]}</div><div class="co-meta mono">${d.num}</div><div class="co-controls"><select data-size="${idx}">${sizeOpts}</select><div class="co-qty"><button type="button" data-minus="${idx}">−</button><span class="qv mono">${it.qty}</span><button type="button" data-plus="${idx}">+</button></div><button class="co-remove" data-remove="${idx}">Remove</button></div></div><div class="co-price">${money(unitPrice(it.key) * it.qty)}</div></div>`;
+          return `<div class="co-item">
+            ${thumb}
+            <div>
+              <div class="co-nm">${d.title} — ${d.sub.split(" · ")[0]}</div>
+              <div class="co-meta mono">${d.num}</div>
+              <div class="co-controls">
+                <select data-size="${idx}">${sizeOpts}</select>
+                <div class="co-qty">
+                  <button type="button" data-minus="${idx}">−</button>
+                  <span class="qv mono">${it.qty}</span>
+                  <button type="button" data-plus="${idx}">+</button>
+                </div>
+                <button class="co-remove" data-remove="${idx}">Remove</button>
+              </div>
+            </div>
+            <div class="co-price">${money(unitPrice(it.key) * it.qty)}</div>
+          </div>`;
         }).join("");
         const sub = basket.reduce((s, i) => s + unitPrice(i.key) * i.qty, 0);
         const grand = sub + shipCost;
@@ -827,16 +1319,66 @@
         coPay.textContent = "Pay " + money(grand);
         updateCartBadge();
       }
-      coShip.addEventListener("click", (e) => { const opt = e.target.closest(".ship-opt"); if (!opt) return; coShip.querySelectorAll(".ship-opt").forEach(o => o.classList.remove("sel")); opt.classList.add("sel"); shipMethod = opt.dataset.ship; shipCost = parseFloat(opt.dataset.cost) || 0; renderBasket(); Sound.rowTap(); });
-      coItems.addEventListener("click", (e) => { const t = e.target; if (t.dataset.plus != null) { basket[+t.dataset.plus].qty = Math.min(10, basket[+t.dataset.plus].qty + 1); renderBasket(); Sound.rowTap(); } else if (t.dataset.minus != null) { const i = +t.dataset.minus; basket[i].qty = Math.max(1, basket[i].qty - 1); renderBasket(); Sound.rowTap(); } else if (t.dataset.remove != null) { basket.splice(+t.dataset.remove, 1); renderBasket(); Sound.rowTap(); } });
-      coItems.addEventListener("change", (e) => { if (e.target.dataset.size != null) { basket[+e.target.dataset.size].size = e.target.value; } });
-      function addToBasket(key) { const d = PRODUCTS[key]; if (!d) return; const defaultSize = expandSizes(specValue(d, "Sizes"))[0]; const existing = basket.find(i => i.key === key && i.size === defaultSize); if (existing) existing.qty = Math.min(10, existing.qty + 1); else basket.push({ key, size: defaultSize, qty: 1 }); renderBasket(); Sound.open(); }
-      function openCheckout() { renderBasket(); co.classList.add("open"); co.setAttribute("aria-hidden", "false"); document.body.classList.add("locked"); scrollPaused = true; coPanel.scrollTop = 0; Sound.open(); if (!reduce) { const items = coPanel.querySelectorAll(".co-h, .co-item, .co-empty, .co-form, .co-totals, .co-pay, .co-note"); gsap.fromTo(items, { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out", stagger: 0.05, delay: 0.2 }); } }
-      function closeCheckout() { co.classList.remove("open"); co.setAttribute("aria-hidden", "true"); document.body.classList.remove("locked"); scrollPaused = false; if (window.__syncScroll) window.__syncScroll(); }
-      document.getElementById("poBuy").addEventListener("click", () => { if (!currentKey) return; addToBasket(currentKey); closeProduct(); openCheckout(); });
+
+      coShip.addEventListener("click", (e) => {
+        const opt = e.target.closest(".ship-opt"); if (!opt) return;
+        coShip.querySelectorAll(".ship-opt").forEach(o => o.classList.remove("sel"));
+        opt.classList.add("sel");
+        shipMethod = opt.dataset.ship;
+        shipCost = parseFloat(opt.dataset.cost) || 0;
+        renderBasket();
+        Sound.rowTap();
+      });
+
+      coItems.addEventListener("click", (e) => {
+        const t = e.target;
+        if (t.dataset.plus != null) { basket[+t.dataset.plus].qty = Math.min(10, basket[+t.dataset.plus].qty + 1); renderBasket(); Sound.rowTap(); }
+        else if (t.dataset.minus != null) { const i = +t.dataset.minus; basket[i].qty = Math.max(1, basket[i].qty - 1); renderBasket(); Sound.rowTap(); }
+        else if (t.dataset.remove != null) { basket.splice(+t.dataset.remove, 1); renderBasket(); Sound.rowTap(); }
+      });
+      coItems.addEventListener("change", (e) => {
+        if (e.target.dataset.size != null) { basket[+e.target.dataset.size].size = e.target.value; }
+      });
+
+      function addToBasket(key) {
+        const d = PRODUCTS[key]; if (!d) return;
+        const defaultSize = expandSizes(specValue(d, "Sizes"))[0];
+        const existing = basket.find(i => i.key === key && i.size === defaultSize);
+        if (existing) existing.qty = Math.min(10, existing.qty + 1);
+        else basket.push({ key, size: defaultSize, qty: 1 });
+        renderBasket();
+        Sound.open();
+      }
+
+      function openCheckout() {
+        renderBasket();
+        co.classList.add("open"); co.setAttribute("aria-hidden", "false");
+        document.body.classList.add("locked");
+        scrollPaused = true;
+        coPanel.scrollTop = 0;
+        Sound.open();
+        if (!reduce) {
+          const items = coPanel.querySelectorAll(".co-h, .co-item, .co-empty, .co-form, .co-totals, .co-pay, .co-note");
+          gsap.fromTo(items, { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out", stagger: 0.05, delay: 0.2 });
+        }
+      }
+      function closeCheckout() {
+        co.classList.remove("open"); co.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("locked");
+        scrollPaused = false;
+        if (window.__syncScroll) window.__syncScroll();
+      }
+
+      document.getElementById("poBuy").addEventListener("click", () => {
+        if (!currentKey) return;
+        addToBasket(currentKey);
+        closeProduct();
+        openCheckout();
+      });
+
       cartBtn.addEventListener("click", openCheckout);
 
-      // Pay → create a Stripe Checkout session via the Netlify function, then redirect.
+      // Pay button — POSTs the basket to /api/checkout, gets a Stripe URL, then redirects.
       coPay.addEventListener("click", async () => {
         if (basket.length === 0) return;
         Sound.click();
@@ -845,21 +1387,27 @@
         coPay.textContent = "Taking you to secure checkout…";
         try {
           const res = await fetch("/api/checkout", {
- "Content-Type": "application/json" }, body: JSON.stringify({ basket, shipMethod }) });
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ basket, shipMethod })
+          });
           const data = await res.json();
-          if (data.url) { window.location = data.url; }
-          else { throw new Error(data.error || "Checkout failed."); }
+          if (data.url) {
+            window.location = data.url;
+          } else {
+            throw new Error(data.error || "Checkout failed.");
+          }
         } catch (err) {
-          coPay.disabled = false; coPay.textContent = original;
+          coPay.disabled = false;
+          coPay.textContent = original;
           alert("Sorry — something went wrong starting checkout. Please try again, or email kalmera.team@gmail.com.");
         }
       });
 
       document.querySelectorAll("[data-co-close]").forEach(el => el.addEventListener("click", closeCheckout));
-      document.addEventListener("keydown", e => { if (e.key === "Escape") { closeProduct(); closeCheckout(); } });
+      document.addEventListener("keydown", e => { if (e.key === "Escape") closeCheckout(); });
       updateCartBadge();
     });
   </script>
 </body>
 </html>
-
