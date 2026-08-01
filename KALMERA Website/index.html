@@ -51,10 +51,7 @@
     background: var(--paper); color: var(--ink);
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     overflow-x: hidden; min-height: 100vh; -webkit-font-smoothing: antialiased;
-    cursor: none;
   }
-  /* hide the system arrow everywhere on pointer devices — the ring is the cursor */
-  @media (hover: hover) { *, a, button, select, input, .rel-item, .folder-head, .subfolder-head { cursor: none; } }
   body.locked { overflow: hidden; }
   .mono { font-family: "SF Mono","JetBrains Mono",ui-monospace,monospace; letter-spacing: 0.02em; }
   .up { text-transform: uppercase; letter-spacing: 0.12em; }
@@ -67,13 +64,14 @@
   .orbit { position: fixed; top: 0; left: 0; width: 220px; height: 220px; border-radius: 50%; z-index: 0; pointer-events: none;
     background: radial-gradient(circle, rgba(27,70,224,0.18), transparent 65%); filter: blur(6px); transform: translate(-50%,-50%); mix-blend-mode: multiply; }
 
-  .cursor { display: none; }
+  .cursor { position: fixed; top: 0; left: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--accent);
+    pointer-events: none; z-index: 90; mix-blend-mode: difference; transform: translate(-50%,-50%); }
   .cursor-ring { position: fixed; top: 0; left: 0; width: 42px; height: 42px; border: 1px solid var(--ink); border-radius: 50%;
     pointer-events: none; z-index: 89; transform: translate(-50%,-50%); transition: width .25s var(--ease), height .25s var(--ease), background .25s, border-color .25s; }
   .cursor-ring.big { width: 90px; height: 90px; background: rgba(27,70,224,0.1); border-color: var(--accent); }
   .cursor-ring .lbl { position: absolute; inset: 0; display: grid; place-items: center; font-size: 0.5rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); opacity: 0; transition: opacity .2s; }
   .cursor-ring.big .lbl { opacity: 1; }
-  .smear { display: none; }
+  .smear { position: fixed; top: 0; left: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); opacity: 0; pointer-events: none; z-index: 88; transform: translate(-50%,-50%); mix-blend-mode: difference; }
   @media (hover: none) { .cursor, .cursor-ring, .smear, .orbit { display: none; } }
 
   .loader { position: fixed; inset: 0; z-index: 100; background: var(--ink); color: var(--paper); display: grid; place-items: center; overflow: hidden; }
@@ -326,7 +324,7 @@
   .po .po-cta:hover { color: var(--accent-2); }
 
   /* ============================================================
-     CHECKOUT PANEL (UI shell — Stripe wiring added later)
+     CHECKOUT PANEL
      ============================================================ */
   .co { position: fixed; inset: 0; z-index: 130; visibility: hidden; }
   .co.open { visibility: visible; }
@@ -374,7 +372,7 @@
   .co .co-qty button:hover { background: var(--line); }
   .co .co-qty .qv { width: 32px; text-align: center; font-weight: 600; font-size: 0.82rem; }
 
-  /* card field placeholder (Stripe Elements mounts here later) */
+  /* card field note */
   .co .co-card-slot { background: var(--paper-2); border: 1px dashed var(--line); border-radius: 6px; padding: 16px 14px;
     font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 10px; }
   .co .co-card-slot .lock { color: var(--accent); }
@@ -632,7 +630,7 @@
     </div>
   </div>
 
-  <!-- ================= CHECKOUT PANEL (UI shell) ================= -->
+  <!-- ================= CHECKOUT PANEL ================= -->
   <div class="co" id="co" aria-hidden="true">
     <div class="co-bg" data-co-close></div>
     <div class="co-panel">
@@ -725,6 +723,9 @@
         function ensureCtx() {
           if (ctx) { if (ctx.state === "suspended") ctx.resume(); return; }
           ctx = new (window.AudioContext || window.webkitAudioContext)();
+          // browsers often hand back a suspended context — without this the click/tick
+          // effects stay silent until something else (the ambient toggle) resumes it
+          if (ctx.state === "suspended") ctx.resume();
           makeNoise();
           fxBus = ctx.createGain(); fxBus.gain.value = 0.9; fxBus.connect(ctx.destination);
           ambientBus = ctx.createGain(); ambientBus.gain.value = 0.9; ambientBus.connect(ctx.destination);
@@ -739,7 +740,7 @@
           const swellDepth = ctx.createGain(); swellDepth.gain.value = 0.28;
           swellLfo.connect(swellDepth); swellDepth.connect(swell.gain); swellLfo.start();
 
-          const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 340; lp.Q.value = 1.4; lp.connect(swell);
+          const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 340; lp. Q.value = 1.4; lp.connect(swell);
           const fLfo = ctx.createOscillator(); fLfo.type = "sine"; fLfo.frequency.value = 0.045;
           const fDepth = ctx.createGain(); fDepth.gain.value = 220; fLfo.connect(fDepth); fDepth.connect(lp.frequency); fLfo.start();
 
@@ -756,7 +757,7 @@
           const sPan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
           if (sPan) { sPan.connect(shimmer); const pLfo = ctx.createOscillator(); pLfo.type = "sine"; pLfo.frequency.value = 0.04; const pD = ctx.createGain(); pD.gain.value = 0.8; pLfo.connect(pD); pD.connect(sPan.pan); pLfo.start(); }
           const sTarget = sPan || shimmer;
-          const sLp = ctx.createBiquadFilter(); sLp.type = "lowpass"; sLp.frequency.value = 900; sLp. Q.value = 3; sLp.connect(sTarget);
+          const sLp = ctx.createBiquadFilter(); sLp.type = "lowpass"; sLp.frequency.value = 900; sLp.Q.value = 3; sLp.connect(sTarget);
           const sLfo = ctx.createOscillator(); sLfo.type = "sine"; sLfo.frequency.value = 0.07; const sD = ctx.createGain(); sD.gain.value = 500; sLfo.connect(sD); sD.connect(sLp.frequency); sLfo.start();
           [440, 660].forEach((f, i) => { const o = ctx.createOscillator(); o.type = "sine"; o.frequency.value = f; const g = ctx.createGain(); g.gain.value = i ? 0.35 : 0.5; o.connect(g); g.connect(sLp); o.start(); });
 
