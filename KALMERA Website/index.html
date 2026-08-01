@@ -844,7 +844,8 @@
         coPay.disabled = true;
         coPay.textContent = "Taking you to secure checkout…";
         try {
-          const res = await fetch("/.netlify/functions/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ basket, shipMethod }) });
+          const res = await fetch("/api/checkout", {
+ "Content-Type": "application/json" }, body: JSON.stringify({ basket, shipMethod }) });
           const data = await res.json();
           if (data.url) { window.location = data.url; }
           else { throw new Error(data.error || "Checkout failed."); }
