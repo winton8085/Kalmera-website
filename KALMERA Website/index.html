@@ -51,7 +51,10 @@
     background: var(--paper); color: var(--ink);
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     overflow-x: hidden; min-height: 100vh; -webkit-font-smoothing: antialiased;
+    cursor: none;
   }
+  /* hide the system arrow everywhere on pointer devices — the ring is the cursor */
+  @media (hover: hover) { *, a, button, select, input, .rel-item, .folder-head, .subfolder-head { cursor: none; } }
   body.locked { overflow: hidden; }
   .mono { font-family: "SF Mono","JetBrains Mono",ui-monospace,monospace; letter-spacing: 0.02em; }
   .up { text-transform: uppercase; letter-spacing: 0.12em; }
@@ -64,14 +67,13 @@
   .orbit { position: fixed; top: 0; left: 0; width: 220px; height: 220px; border-radius: 50%; z-index: 0; pointer-events: none;
     background: radial-gradient(circle, rgba(27,70,224,0.18), transparent 65%); filter: blur(6px); transform: translate(-50%,-50%); mix-blend-mode: multiply; }
 
-  .cursor { position: fixed; top: 0; left: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--accent);
-    pointer-events: none; z-index: 90; mix-blend-mode: difference; transform: translate(-50%,-50%); }
+  .cursor { display: none; }
   .cursor-ring { position: fixed; top: 0; left: 0; width: 42px; height: 42px; border: 1px solid var(--ink); border-radius: 50%;
     pointer-events: none; z-index: 89; transform: translate(-50%,-50%); transition: width .25s var(--ease), height .25s var(--ease), background .25s, border-color .25s; }
   .cursor-ring.big { width: 90px; height: 90px; background: rgba(27,70,224,0.1); border-color: var(--accent); }
   .cursor-ring .lbl { position: absolute; inset: 0; display: grid; place-items: center; font-size: 0.5rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); opacity: 0; transition: opacity .2s; }
   .cursor-ring.big .lbl { opacity: 1; }
-  .smear { position: fixed; top: 0; left: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); opacity: 0; pointer-events: none; z-index: 88; transform: translate(-50%,-50%); mix-blend-mode: difference; }
+  .smear { display: none; }
   @media (hover: none) { .cursor, .cursor-ring, .smear, .orbit { display: none; } }
 
   .loader { position: fixed; inset: 0; z-index: 100; background: var(--ink); color: var(--paper); display: grid; place-items: center; overflow: hidden; }
@@ -100,6 +102,13 @@
   .sound-btn .lbl-off { display: inline; } .sound-btn .lbl-on { display: none; }
   .sound-btn.on .lbl-off { display: none; } .sound-btn.on .lbl-on { display: inline; }
   @keyframes sb { 0%,100%{ height: 3px; } 50%{ height: 14px; } }
+
+  /* language picker in nav */
+  .lang-sel { background: none; border: 1px solid var(--line); border-radius: 5px; color: var(--ink);
+    font-family: inherit; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 5px 8px; cursor: pointer; transition: border-color .25s, color .25s; }
+  .lang-sel:hover { border-color: var(--accent); color: var(--accent); }
+  .lang-sel:focus { outline: none; border-color: var(--accent); }
 
   /* cart icon in nav */
   .cart-btn { position: relative; display: flex; align-items: center; gap: 7px; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.12em;
@@ -260,6 +269,25 @@
 
   .reveal { will-change: transform, opacity; }
 
+  /* ---------- ARABIC / RIGHT-TO-LEFT ---------- */
+  html[dir="rtl"] body { direction: rtl; }
+  html[dir="rtl"] .po .po-panel,
+  html[dir="rtl"] .co .co-panel { right: auto; left: 0; transform: translateX(-100%); box-shadow: 20px 0 60px rgba(0,0,0,0.15); }
+  html[dir="rtl"] .po.open .po-panel,
+  html[dir="rtl"] .co.open .co-panel { transform: translateX(0); }
+  html[dir="rtl"] .po .po-close,
+  html[dir="rtl"] .co .co-close { margin-left: 0; margin-right: auto; }
+  html[dir="rtl"] .timeline { padding-left: 0; padding-right: 4px; }
+  html[dir="rtl"] .timeline .tspine { left: auto; right: 7px; }
+  html[dir="rtl"] .timeline .trow { padding-left: 0; padding-right: 44px; }
+  html[dir="rtl"] .timeline .trow .tdot { left: auto; right: 0; }
+  html[dir="rtl"] .subfolder-head { padding-left: 6px; padding-right: 44px; }
+  html[dir="rtl"] .rel-item { padding-left: 6px; padding-right: 80px; }
+  html[dir="rtl"] .faq-a .fa-inner { padding-left: 6px; padding-right: 42px; }
+  html[dir="rtl"] .po .po-sizeguide th,
+  html[dir="rtl"] .po .po-sizeguide td { text-align: right; }
+  html[dir="rtl"] .po .po-cta { text-align: right; }
+
   /* ============================================================
      PRODUCT OVERLAY (in-page modal)
      ============================================================ */
@@ -291,7 +319,8 @@
   .po .po-specs .sr span:first-child { color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.72rem; }
   .po .po-specs .sr b { font-weight: 600; }
   .po .po-cta { display: inline-block; margin-top: 34px; font-size: clamp(1.1rem,2.6vw,1.9rem); font-weight: 700; letter-spacing: -0.02em;
-    color: var(--accent); position: relative; padding: 0.2em 0; }
+    color: var(--accent); position: relative; padding: 0.2em 0;
+    background: none; border: none; font-family: inherit; cursor: pointer; text-align: left; }
   .po .po-cta .u { display: block; overflow: visible; }
   .po .po-cta .u .el { display: inline-block; }
   .po .po-cta:hover { color: var(--accent-2); }
@@ -404,6 +433,17 @@
         <span class="bars"><i></i><i></i><i></i><i></i></span>
         <span class="lbl-off">Ambient Off</span><span class="lbl-on">Ambient On</span>
       </button>
+      <select class="lang-sel mono" id="langSel" aria-label="Choose language">
+        <option value="en">EN</option>
+        <option value="fr">FR</option>
+        <option value="de">DE</option>
+        <option value="es">ES</option>
+        <option value="it">IT</option>
+        <option value="pt">PT</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+        <option value="ar">العربية</option>
+      </select>
       <button class="cart-btn mono" id="cartBtn" aria-label="Open basket">
         <span class="cart-ico">▤</span><span>Basket</span>
         <span class="cart-count" id="cartCount">0</span>
@@ -459,7 +499,7 @@
               <div class="subfolder-head">
                 <span class="sfchev mono">▸</span>
                 <span class="sfname">KARBON</span>
-                <span class="sfmeta mono">The Anchor</span>
+                <span class="sfmeta mono">The Anchor · Black</span>
               </div>
               <div class="subfolder-body">
                 <div class="rel-item" data-product="karbon-hoodie"><span class="ri-n mono">01</span><span class="ri-name">Mass — Hoodie</span><span class="ri-cat mono">500 g/m² · £50</span><span class="ri-open mono">Open →</span></div>
@@ -473,7 +513,7 @@
               <div class="subfolder-head">
                 <span class="sfchev mono">▸</span>
                 <span class="sfname">KLOUD</span>
-                <span class="sfmeta mono">The Counterpoint</span>
+                <span class="sfmeta mono">The Counterpoint · White</span>
               </div>
               <div class="subfolder-body">
                 <div class="rel-item" data-product="kloud-hoodie"><span class="ri-n mono">01</span><span class="ri-name">Mass — Hoodie</span><span class="ri-cat mono">500 g/m² · £50</span><span class="ri-open mono">Open →</span></div>
@@ -587,8 +627,7 @@
         <div class="po-specs" id="poSpecs"></div>
         <details class="po-sizeguide" id="poSizeGuide"><summary>Size guide</summary><div id="poSizeBody"></div></details>
         <div class="po-delivery mono" id="poDelivery" style="margin-top:20px;font-size:0.78rem;color:var(--muted);line-height:1.6;">Made to order · Free standard shipping (~30 days) or Express (~10 days) at checkout.</div>
-        <a class="po-cta" id="poCta" href="mailto:kalmera.team@gmail.com?subject=Reserve%20a%20piece"><span class="u" data-cta>reserve yours →</span></a>
-        <button class="co-pay" id="poBuy" style="margin-top:18px;max-width:280px">Add to basket +</button>
+        <button class="po-cta" id="poBuy"><span class="u" data-cta>add to basket →</span></button>
       </div>
     </div>
   </div>
@@ -641,17 +680,21 @@
       </div>
     </div>
   </div>
+  <!-- translations: must load BEFORE the main script so text is swapped before it gets split for animation -->
+  <script src="i18n.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      // translation lookup — falls back to the English string if i18n.js is missing
+      const TT = (key, fallback) => (window.KALMERA_STRINGS && window.KALMERA_STRINGS[key]) || fallback;
       if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
       const CH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
       function splitLetters(el, cls) {
         const txt = el.textContent; el.textContent = "";
-        [...txt].forEach(c => { const s = document.createElement("span"); s.className = cls; s.textContent = c === " " ? " " : c; el.appendChild(s); });
+        [...txt].forEach(c => { const s = document.createElement("span"); s.className = cls; s.textContent = c === " " ? "\u00A0" : c; el.appendChild(s); });
         return el.querySelectorAll("." + cls);
       }
       function scramble(el) {
@@ -850,7 +893,7 @@
           smears.forEach((s, i) => { s.x += (px - s.x)*0.35; s.y += (py - s.y)*0.35; s.el.style.transform = `translate(${s.x}px,${s.y}px) translate(-50%,-50%)`; s.el.style.opacity = Math.max(0, 0.4 - i*0.08); px = s.x; py = s.y; });
           requestAnimationFrame(loopC);
         })();
-        document.querySelectorAll("a, .row, [data-cursor], button, [data-po-close]").forEach(el => {
+        document.querySelectorAll("a, .row, .rel-item, .folder-head, .subfolder-head, [data-cursor], button, [data-po-close]").forEach(el => {
           el.addEventListener("mouseenter", () => { ring.classList.add("big"); Sound.tick(); });
           el.addEventListener("mouseleave", () => ring.classList.remove("big"));
         });
@@ -966,6 +1009,7 @@
             const words = h.textContent.split(/(\s+)/);
             h.innerHTML = words.map(w => w.trim() ? `<span style="display:inline-block;overflow:hidden;vertical-align:top"><span class="hw" style="display:inline-block">${w}</span></span>` : " ").join("");
             const hw = h.querySelectorAll(".hw");
+            // pins words to their final visible state so nothing can leave them stuck/invisible
             const settleWords = () => gsap.set(hw, { yPercent: 0, opacity: 1, clearProps: "" });
             const tlIn = gsap.timeline({ onStart: () => Sound.rowTap(), onComplete: settleWords,
               scrollTrigger: { trigger: row, start: "top 88%", once: true } });
@@ -978,6 +1022,7 @@
             row.addEventListener("mouseenter", () => {
               gsap.to(row, { paddingLeft: 60, duration: 0.4, ease: "power3.out" });
               gsap.to(dot, { scale: 1.5, duration: 0.4, ease: "back.out(3)" });
+              // hover bob keeps opacity locked at 1 so words never vanish on mouse-out
               gsap.to(hw, { yPercent: -14, opacity: 1, duration: 0.35, ease: "back.out(2)", stagger: { each: 0.03, from: "start" }, yoyo: true, repeat: 1,
                 onComplete: () => gsap.set(hw, { yPercent: 0, opacity: 1 }) });
               Sound.tick();
@@ -1092,67 +1137,76 @@
 
       /* ============================================================
          PRODUCT OVERLAY — 6 products (KARBON/KLOUD × Mass/Base/Drift)
+         Image files live in images/ — hero + 4 gallery shots per piece:
+           karbon-mass-hero.png, karbon-mass-1..4.png  (etc.)
+         Any missing file quietly falls back to the gradient.
          ============================================================ */
       const PRODUCTS = {
         "karbon-hoodie": {
-          num: "KARBON / 01", title: "Mass", sub: "Hoodie · KARBON — The Anchor · Drop 01", color: "#1a1712",
+          num: "KARBON / 01", title: "Mass", sub: "Hoodie · KARBON Black · Drop 01", color: "#1a1712",
           hero: "KARBON MASS", gallery: ["Front", "Back", "Detail", "Hood"],
-          images: ["images/karbon-mass-hero.png","images/karbon-mass-1.png","images/karbon-mass-2.png","images/karbon-mass-3.png"],
+          images: ["images/karbon-mass-hero.png","images/karbon-mass-1.png","images/karbon-mass-2.png","images/karbon-mass-3.png","images/karbon-mass-4.png"],
           desc: [
             "The anchor of the drop. Built on a 500 g/m² heavyweight fleece — dense, structured, and substantial in the hand. Made to hold its shape and be worn for years, not seasons.",
             "Oversized fit, plush brushed interior, clean considered exterior. The KALMERA mark sits centred on the chest, printed to order. Made when you order it, shipped worldwide — nothing wasted."
           ],
-          specs: [["Weight","500 g/m² · 14.7 oz"],["Fabric","Heavyweight fleece"],["Fit","Oversized"],["Mark","Centre chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£50 · free shipping"],["Drop","01 — Oct 2026"]]
+          specs: [["Colour","Black"],["Weight","500 g/m² · 14.7 oz"],["Fabric","Heavyweight fleece"],["Fit","Oversized"],["Mark","Centre chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£50 · free shipping"],["Drop","01 — Oct 2026"]]
         },
         "karbon-tee": {
-          num: "KARBON / 02", title: "Base", sub: "Tee · KARBON — The Anchor · Drop 01", color: "#1a1712",
+          num: "KARBON / 02", title: "Base", sub: "Tee · KARBON Black · Drop 01", color: "#1a1712",
           hero: "KARBON BASE", gallery: ["Front", "Back", "Detail", "Collar"],
-          images: ["images/karbon-base-hero.png","images/karbon-base-1.png","images/karbon-base-2.png","images/karbon-base-3.png"],
+          images: ["images/karbon-base-hero.png","images/karbon-base-1.png","images/karbon-base-2.png","images/karbon-base-3.png","images/karbon-base-4.png"],
           desc: [
             "The everyday half of KARBON. A boxy, oversized tee at a genuine 400 g/m² — heavyweight for a tee, with real structure and a clean drape.",
             "A small KALMERA mark on the left chest, printed to order. Shipped worldwide. Built to sit right and last."
           ],
-          specs: [["Weight","400 g/m² · 11.8 oz"],["Fabric","Heavyweight cotton"],["Fit","Boxy oversized"],["Mark","Left chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£30 · free shipping"],["Drop","01 — Oct 2026"]]
+          specs: [["Colour","Black"],["Weight","400 g/m² · 11.8 oz"],["Fabric","Heavyweight cotton"],["Fit","Boxy oversized"],["Mark","Left chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£30 · free shipping"],["Drop","01 — Oct 2026"]]
         },
         "karbon-sweatpants": {
-          num: "KARBON / 03", title: "Drift", sub: "Sweatpants · KARBON — The Anchor · Drop 01", color: "#1a1712",
+          num: "KARBON / 03", title: "Drift", sub: "Sweatpants · KARBON Black · Drop 01", color: "#1a1712",
           hero: "KARBON DRIFT", gallery: ["Front", "Back", "Detail", "Waistband"],
-          images: ["images/karbon-drift-hero.png","images/karbon-drift-1.png","images/karbon-drift-2.png","images/karbon-drift-3.png"],
+          images: ["images/karbon-drift-hero.png","images/karbon-drift-1.png","images/karbon-drift-2.png","images/karbon-drift-3.png","images/karbon-drift-4.png"],
           desc: [
             "The match to the hoodie. Heavyweight 420 g/m² sweatpants with a straight-leg cut — a touch lighter than the hoodie by design, so they move.",
             "The KALMERA mark runs vertically down the lower leg, printed to order. Shipped worldwide. The full KARBON set, head to toe."
           ],
-          specs: [["Weight","420 g/m² · 12.4 oz"],["Fabric","Heavyweight"],["Fit","Straight leg"],["Mark","Vertical, lower leg"],["Sizes","S–XL"],["Made","To order · ships worldwide"],["Price","£40 · free shipping"],["Drop","01 — Oct 2026"]]
+          specs: [["Colour","Black"],["Weight","420 g/m² · 12.4 oz"],["Fabric","Heavyweight"],["Fit","Straight leg"],["Mark","Vertical, lower leg"],["Sizes","S–XL"],["Made","To order · ships worldwide"],["Price","£40 · free shipping"],["Drop","01 — Oct 2026"]]
         },
         "kloud-hoodie": {
-          num: "KLOUD / 01", title: "Mass", sub: "Hoodie · KLOUD — The Counterpoint · Drop 01", color: "#8a8175",
-          hero: "KLOUD MASS", gallery: ["Front", "Back", "Detail", "Hood"], images: null,
+          num: "KLOUD / 01", title: "Mass", sub: "Hoodie · KLOUD White · Drop 01", color: "#8a8175",
+          hero: "KLOUD MASS", gallery: ["Front", "Back", "Detail", "Hood"],
+          images: ["images/kloud-mass-hero.png","images/kloud-mass-1.png","images/kloud-mass-2.png","images/kloud-mass-3.png","images/kloud-mass-4.png"],
           desc: [
             "The counterpoint. The same 500 g/m² heavyweight fleece and oversized cut as KARBON, in its lighter register — the substantial feel of a proper premium hoodie.",
             "Plush brushed interior, considered exterior, KALMERA mark centred on the chest and printed to order. Made when you order it, shipped worldwide."
           ],
-          specs: [["Weight","500 g/m² · 14.7 oz"],["Fabric","Heavyweight fleece"],["Fit","Oversized"],["Mark","Centre chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£50 · free shipping"],["Drop","01 — Oct 2026"]]
+          specs: [["Colour","White"],["Weight","500 g/m² · 14.7 oz"],["Fabric","Heavyweight fleece"],["Fit","Oversized"],["Mark","Centre chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£50 · free shipping"],["Drop","01 — Oct 2026"]]
         },
         "kloud-tee": {
-          num: "KLOUD / 02", title: "Base", sub: "Tee · KLOUD — The Counterpoint · Drop 01", color: "#8a8175",
-          hero: "KLOUD BASE", gallery: ["Front", "Back", "Detail", "Collar"], images: null,
+          num: "KLOUD / 02", title: "Base", sub: "Tee · KLOUD White · Drop 01", color: "#8a8175",
+          hero: "KLOUD BASE", gallery: ["Front", "Back", "Detail", "Collar"],
+          images: ["images/kloud-base-hero.png","images/kloud-base-1.png","images/kloud-base-2.png","images/kloud-base-3.png","images/kloud-base-4.png"],
           desc: [
             "The everyday half of KLOUD. A boxy, oversized 400 g/m² tee in the lighter register — clean, structured, and built to be worn on repeat.",
             "A small KALMERA mark on the left chest, printed to order. Shipped worldwide."
           ],
-          specs: [["Weight","400 g/m² · 11.8 oz"],["Fabric","Heavyweight cotton"],["Fit","Boxy oversized"],["Mark","Left chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£30 · free shipping"],["Drop","01 — Oct 2026"]]
+          specs: [["Colour","White"],["Weight","400 g/m² · 11.8 oz"],["Fabric","Heavyweight cotton"],["Fit","Boxy oversized"],["Mark","Left chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£30 · free shipping"],["Drop","01 — Oct 2026"]]
         },
         "kloud-sweatpants": {
-          num: "KLOUD / 03", title: "Drift", sub: "Sweatpants · KLOUD — The Counterpoint · Drop 01", color: "#8a8175",
-          hero: "KLOUD DRIFT", gallery: ["Front", "Back", "Detail", "Waistband"], images: null,
+          num: "KLOUD / 03", title: "Drift", sub: "Sweatpants · KLOUD White · Drop 01", color: "#8a8175",
+          hero: "KLOUD DRIFT", gallery: ["Front", "Back", "Detail", "Waistband"],
+          images: ["images/kloud-drift-hero.png","images/kloud-drift-1.png","images/kloud-drift-2.png","images/kloud-drift-3.png","images/kloud-drift-4.png"],
           desc: [
             "The match to the KLOUD hoodie. Heavyweight 420 g/m² straight-leg sweatpants in the lighter register — the full KLOUD set, head to toe.",
             "The KALMERA mark runs vertically down the lower leg, printed to order. Shipped worldwide."
           ],
-          specs: [["Weight","420 g/m² · 12.4 oz"],["Fabric","Heavyweight"],["Fit","Straight leg"],["Mark","Vertical, lower leg"],["Sizes","S–XL"],["Made","To order · ships worldwide"],["Price","£40 · free shipping"],["Drop","01 — Oct 2026"]]
+          specs: [["Colour","White"],["Weight","420 g/m² · 12.4 oz"],["Fabric","Heavyweight"],["Fit","Straight leg"],["Mark","Vertical, lower leg"],["Sizes","S–XL"],["Made","To order · ships worldwide"],["Price","£40 · free shipping"],["Drop","01 — Oct 2026"]]
         }
       };
 
+      /* Size guides — measurements in cm. PLACEHOLDER values — replace with the
+         real numbers from each Tapstitch product's "Size Guide" (RW0035 / RT0080 / RK0009).
+         Keyed by garment type since sizing is per garment, not per colour. */
       const SIZE_GUIDES = {
         hoodie: {
           cols: ["Size", "Chest (cm)", "Length (cm)", "Sleeve (cm)"],
@@ -1170,6 +1224,7 @@
           note: "Straight-leg fit. Garment measurements, laid flat. Placeholder values — confirm against Tapstitch RK0009."
         }
       };
+      // map a product key to its garment type
       const garmentOf = (key) => key.includes("hoodie") ? "hoodie" : key.includes("tee") ? "tee" : "sweatpants";
 
       const po = document.getElementById("po");
@@ -1177,28 +1232,31 @@
       const poHero = document.getElementById("poHero"), poHeroLabel = document.getElementById("poHeroLabel");
       const poGallery = document.getElementById("poGallery"), poDesc = document.getElementById("poDesc"), poSpecs = document.getElementById("poSpecs");
       const poSizeBody = document.getElementById("poSizeBody");
-      const poCta = document.getElementById("poCta");
       const panel = po.querySelector(".po-panel");
       let currentKey = null;
 
       const ctaWrap = document.querySelector("[data-cta]");
       if (ctaWrap && !reduce) {
         const ctaLetters = splitLetters(ctaWrap, "el");
-        const ctaLink = ctaWrap.closest("a");
+        const ctaLink = ctaWrap.closest("button, a");
         ctaLink.addEventListener("mouseenter", () => gsap.to(ctaLetters, { yPercent: -12, stagger: { each: 0.015, from: "center" }, duration: 0.3, ease: "power2.out", yoyo: true, repeat: 1 }));
       }
 
       function openProduct(key) {
         const d = PRODUCTS[key]; if (!d) return;
+        // translated copy for this product, when a non-English language is active
+        const tx = (window.KALMERA_PRODUCT_TEXT && window.KALMERA_PRODUCT_TEXT[key]) || {};
+        const desc = tx.desc || d.desc;
+        const specs = tx.specs || d.specs;
+        const gallery = tx.gallery || d.gallery;
         currentKey = key;
         poNum.textContent = d.num;
         poTitle.textContent = d.title;
-        poSub.textContent = d.sub;
+        poSub.textContent = tx.sub || d.sub;
         poHeroLabel.textContent = d.hero;
-        const subj = encodeURIComponent(`Reserve — ${d.hero}`);
-        const body = encodeURIComponent(`I'd like to reserve the ${d.hero} (${d.sub}). Let me know when Drop 01 is available.`);
-        poCta.href = `mailto:kalmera.team@gmail.com?subject=${subj}&body=${body}`;
         const imgs = d.images || [];
+        // HERO — gradient + label always present; layer the photo on top if it exists.
+        // If the file 404s, remove the img and the gradient/label shows through.
         poHero.style.background = `linear-gradient(150deg, ${d.color}, #05040a)`;
         poHero.querySelectorAll("img").forEach(n => n.remove());
         if (imgs[0]) {
@@ -1207,24 +1265,30 @@
           im.onerror = () => im.remove();
           poHero.insertBefore(im, poHero.firstChild);
         }
-        poGallery.innerHTML = d.gallery.map((g, i) =>
+        // GALLERY — one framed cell per label; layer its photo (imgs[1..]) if present.
+        poGallery.innerHTML = gallery.map((g, i) =>
           `<div class="g" style="background:linear-gradient(150deg, ${d.color}, #0b0a0f)"><span>${g}</span></div>`).join("");
         gsap.utils.toArray(poGallery.children).forEach((cell, i) => {
           const src = imgs[i + 1];
           if (!src) return;
           const im = new Image();
-          im.src = src; im.alt = `${d.hero} — ${d.gallery[i]}`;
+          im.src = src; im.alt = `${d.hero} — ${gallery[i]}`;
           im.onerror = () => im.remove();
           cell.insertBefore(im, cell.firstChild);
         });
-        poDesc.innerHTML = d.desc.map(p => `<p>${p}</p>`).join("");
-        poSpecs.innerHTML = d.specs.map(s => `<div class="sr"><span>${s[0]}</span><b>${s[1]}</b></div>`).join("");
-        const sg = SIZE_GUIDES[garmentOf(key)];
+        poDesc.innerHTML = desc.map(p => `<p>${p}</p>`).join("");
+        poSpecs.innerHTML = specs.map(s => `<div class="sr"><span>${s[0]}</span><b>${s[1]}</b></div>`).join("");
+        // size guide for this garment type
+        const garment = garmentOf(key);
+        const sgT = (window.KALMERA_SIZE_TEXT && window.KALMERA_SIZE_TEXT[garment]) || {};
+        const sg = SIZE_GUIDES[garment];
         if (sg) {
+          const cols = sgT.cols || sg.cols;
+          const note = sgT.note || sg.note;
           poSizeBody.innerHTML =
-            `<table><thead><tr>${sg.cols.map(c => `<th>${c}</th>`).join("")}</tr></thead>` +
+            `<table><thead><tr>${cols.map(c => `<th>${c}</th>`).join("")}</tr></thead>` +
             `<tbody>${sg.rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>` +
-            `<div class="sg-note">${sg.note}</div>`;
+            `<div class="sg-note">${note}</div>`;
         }
         po.classList.add("open"); po.setAttribute("aria-hidden", "false");
         document.body.classList.add("locked");
@@ -1251,6 +1315,8 @@
 
       /* ============================================================
          BASKET + CHECKOUT
+         basket = [{ key, size, qty }]. Prices/sizes read from PRODUCTS
+         spec sheets so everything stays in sync automatically.
          ============================================================ */
       const co = document.getElementById("co");
       const coPanel = co.querySelector(".co-panel");
@@ -1262,6 +1328,7 @@
       let basket = [];
       let shipMethod = "Standard", shipCost = 0;
 
+      // spec helpers
       const specValue = (d, label) => { const row = d.specs.find(s => s[0] === label); return row ? row[1] : ""; };
       const parsePrice = (str) => { const m = String(str).match(/£\s*([\d.]+)/); return m ? parseFloat(m[1]) : 0; };
       const SIZE_ORDER = ["XS","S","M","L","XL","2XL","3XL"];
@@ -1304,22 +1371,24 @@
                   <span class="qv mono">${it.qty}</span>
                   <button type="button" data-plus="${idx}">+</button>
                 </div>
-                <button class="co-remove" data-remove="${idx}">Remove</button>
+                <button class="co-remove" data-remove="${idx}">${TT("remove","Remove")}</button>
               </div>
             </div>
             <div class="co-price">${money(unitPrice(it.key) * it.qty)}</div>
           </div>`;
         }).join("");
+        // totals — subtotal + chosen shipping
         const sub = basket.reduce((s, i) => s + unitPrice(i.key) * i.qty, 0);
         const grand = sub + shipCost;
         coSubtotal.textContent = money(sub);
-        coShipLine.textContent = shipCost > 0 ? money(shipCost) + " · Express" : "Free · Standard";
+        coShipLine.textContent = shipCost > 0 ? money(shipCost) + " · " + TT("express","Express") : TT("freeStandard","Free · Standard");
         coShipLine.className = shipCost > 0 ? "" : "free";
         coTotal.textContent = money(grand);
-        coPay.textContent = "Pay " + money(grand);
+        coPay.textContent = TT("pay","Pay") + " " + money(grand);
         updateCartBadge();
       }
 
+      // delivery method selection
       coShip.addEventListener("click", (e) => {
         const opt = e.target.closest(".ship-opt"); if (!opt) return;
         coShip.querySelectorAll(".ship-opt").forEach(o => o.classList.remove("sel"));
@@ -1330,6 +1399,7 @@
         Sound.rowTap();
       });
 
+      // event delegation for the per-row controls
       coItems.addEventListener("click", (e) => {
         const t = e.target;
         if (t.dataset.plus != null) { basket[+t.dataset.plus].qty = Math.min(10, basket[+t.dataset.plus].qty + 1); renderBasket(); Sound.rowTap(); }
@@ -1343,6 +1413,7 @@
       function addToBasket(key) {
         const d = PRODUCTS[key]; if (!d) return;
         const defaultSize = expandSizes(specValue(d, "Sizes"))[0];
+        // if same product+size already in basket, just bump qty
         const existing = basket.find(i => i.key === key && i.size === defaultSize);
         if (existing) existing.qty = Math.min(10, existing.qty + 1);
         else basket.push({ key, size: defaultSize, qty: 1 });
@@ -1369,6 +1440,7 @@
         if (window.__syncScroll) window.__syncScroll();
       }
 
+      // "Add to basket" in the product panel — adds, then opens the basket
       document.getElementById("poBuy").addEventListener("click", () => {
         if (!currentKey) return;
         addToBasket(currentKey);
@@ -1376,15 +1448,17 @@
         openCheckout();
       });
 
+      // cart icon in the nav
       cartBtn.addEventListener("click", openCheckout);
 
-      // Pay button — POSTs the basket to /api/checkout, gets a Stripe URL, then redirects.
+      // Pay button — POSTs the basket to /api/checkout (serverless function),
+      // gets back a Stripe Checkout session URL, then redirects there.
       coPay.addEventListener("click", async () => {
         if (basket.length === 0) return;
         Sound.click();
         const original = coPay.textContent;
         coPay.disabled = true;
-        coPay.textContent = "Taking you to secure checkout…";
+        coPay.textContent = TT("payLoading","Taking you to secure checkout…");
         try {
           const res = await fetch("/api/checkout", {
             method: "POST",
@@ -1393,14 +1467,14 @@
           });
           const data = await res.json();
           if (data.url) {
-            window.location = data.url;
+            window.location = data.url;      // → Stripe's secure payment page
           } else {
             throw new Error(data.error || "Checkout failed.");
           }
         } catch (err) {
           coPay.disabled = false;
           coPay.textContent = original;
-          alert("Sorry — something went wrong starting checkout. Please try again, or email kalmera.team@gmail.com.");
+          alert(TT("payError","Sorry — something went wrong starting checkout. Please try again, or email kalmera.team@gmail.com."));
         }
       });
 
