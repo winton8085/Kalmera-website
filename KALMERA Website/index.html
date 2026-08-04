@@ -9,12 +9,12 @@
 <meta name="description" content="KALMERA — an essentials studio in England. The fewest, best pieces: engineered fabric, obsessive fit, nothing wasted." />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="KALMERA — essentials studio" />
-<meta property="og:description" content="The fewest, best pieces. Engineered fabric, obsessive fit, nothing wasted. Drop 01 — 2026." />
+<meta property="og:description" content="The fewest, best pieces. Engineered fabric, obsessive fit, nothing wasted. Available now." />
 <meta property="og:image" content="images/karbon-mass-hero.png" />
 <meta property="og:site_name" content="KALMERA" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="KALMERA — essentials studio" />
-<meta name="twitter:description" content="The fewest, best pieces. Nothing wasted. Drop 01 — 2026." />
+<meta name="twitter:description" content="The fewest, best pieces. Nothing wasted. Available now." />
 <meta name="twitter:image" content="images/karbon-mass-hero.png" />
 <meta name="theme-color" content="#f3f0ea" />
 
@@ -186,9 +186,14 @@
   .subfolder-head .sfmeta { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.09em; }
   .subfolder-body { overflow: hidden; height: 0; }
 
-  .rel-item { display: grid; grid-template-columns: 40px 1fr auto auto; gap: 18px; align-items: baseline; padding: 15px 6px 15px 80px;
+  .rel-item { display: grid; grid-template-columns: 58px 34px 1fr auto auto; gap: 18px; align-items: center; padding: 14px 6px 14px 44px;
     border-top: 1px solid var(--line); cursor: pointer; transition: background .25s, padding-left .3s var(--ease); }
-  .rel-item:hover { background: rgba(27,70,224,0.06); padding-left: 90px; }
+  .rel-item:hover { background: rgba(27,70,224,0.06); padding-left: 54px; }
+  /* product thumbnail — photo if the file exists, gradient underneath if not */
+  .rel-item .ri-thumb { width: 58px; height: 58px; border-radius: 6px; overflow: hidden; position: relative;
+    border: 1px solid var(--line); transition: transform .3s var(--ease); }
+  .rel-item:hover .ri-thumb { transform: scale(1.06); }
+  .rel-item .ri-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .rel-item .ri-n { font-size: 0.7rem; color: var(--faint); }
   .rel-item .ri-name { font-size: clamp(1rem,2.2vw,1.35rem); font-weight: 600; letter-spacing: -0.01em; transition: color .25s; }
   .rel-item:hover .ri-name { color: var(--accent); }
@@ -196,7 +201,7 @@
   .rel-item .ri-open { font-size: 0.62rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.14em; opacity: 0; transition: opacity .25s; }
   .rel-item:hover .ri-open { opacity: 1; }
   .rel-empty { padding: 20px 6px 24px 44px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.8rem; letter-spacing: 0.04em; }
-  @media (max-width: 640px){ .rel-item { grid-template-columns: 30px 1fr; padding-left: 60px; } .rel-item:hover { padding-left: 66px; } .rel-item .ri-cat, .rel-item .ri-open { display: none; } }
+  @media (max-width: 640px){ .rel-item { grid-template-columns: 52px 1fr; padding-left: 24px; } .rel-item:hover { padding-left: 30px; } .rel-item .ri-thumb { width: 52px; height: 52px; } .rel-item .ri-n, .rel-item .ri-cat, .rel-item .ri-open { display: none; } }
 
   .marq { overflow: hidden; white-space: nowrap; padding: 24px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .marq .run { display: inline-flex; gap: 40px; will-change: transform; }
@@ -280,7 +285,7 @@
   html[dir="rtl"] .timeline .trow { padding-left: 0; padding-right: 44px; }
   html[dir="rtl"] .timeline .trow .tdot { left: auto; right: 0; }
   html[dir="rtl"] .subfolder-head { padding-left: 6px; padding-right: 44px; }
-  html[dir="rtl"] .rel-item { padding-left: 6px; padding-right: 80px; }
+  html[dir="rtl"] .rel-item { padding-left: 6px; padding-right: 44px; }
   html[dir="rtl"] .faq-a .fa-inner { padding-left: 6px; padding-right: 42px; }
   html[dir="rtl"] .po .po-sizeguide th,
   html[dir="rtl"] .po .po-sizeguide td { text-align: right; }
@@ -316,7 +321,10 @@
   .po .po-specs .sr { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 0.88rem; }
   .po .po-specs .sr span:first-child { color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.72rem; }
   .po .po-specs .sr b { font-weight: 600; }
-  .po .po-cta { display: inline-block; margin-top: 34px; font-size: clamp(1.1rem,2.6vw,1.9rem); font-weight: 700; letter-spacing: -0.02em;
+  .po .po-priceline { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-top: 14px; }
+  .po .po-price { font-size: clamp(1.8rem,5vw,2.8rem); font-weight: 700; letter-spacing: -0.02em; }
+  .po .po-avail { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); }
+  .po .po-cta { display: inline-block; margin-top: 20px; font-size: clamp(1.1rem,2.6vw,1.9rem); font-weight: 700; letter-spacing: -0.02em;
     color: var(--accent); position: relative; padding: 0.2em 0;
     background: none; border: none; font-family: inherit; cursor: pointer; text-align: left; }
   .po .po-cta .u { display: block; overflow: visible; }
@@ -488,12 +496,12 @@
           <div class="folder-head">
             <span class="fchev mono">▸</span>
             <span class="fname">Drop 01</span>
-            <span class="fmeta mono">02 Lines · Oct 2026</span>
+            <span class="fmeta mono">02 Lines · Available now</span>
           </div>
           <div class="folder-body">
 
             <!-- KARBON line -->
-            <div class="subfolder" data-folder>
+            <div class="subfolder open" data-folder>
               <div class="subfolder-head">
                 <span class="sfchev mono">▸</span>
                 <span class="sfname">KARBON</span>
@@ -507,7 +515,7 @@
             </div>
 
             <!-- KLOUD line -->
-            <div class="subfolder" data-folder>
+            <div class="subfolder open" data-folder>
               <div class="subfolder-head">
                 <span class="sfchev mono">▸</span>
                 <span class="sfname">KLOUD</span>
@@ -552,7 +560,7 @@
         <div class="trow"><span class="tdot"></span><span class="tdate mono">Q4 2025</span><div class="tbody"><h4>KALMERA Apparel founded</h4><p>One table, a single idea — build the fewest, best essentials and nothing else.</p></div></div>
         <div class="trow"><span class="tdot"></span><span class="tdate mono">Q1 2026</span><div class="tbody"><h4>Fabric development</h4><p>Sampling heavyweight 500 g/m² fleece until KARBON and KLOUD hold their shape and feel.</p></div></div>
         <div class="trow"><span class="tdot"></span><span class="tdate mono">Q2 2026</span><div class="tbody"><h4>Identity &amp; studio</h4><p>The KALMERA identity takes shape — the mark, the type, the philosophy of nothing wasted.</p></div></div>
-        <div class="trow"><span class="tdot"></span><span class="tdate mono">Oct 2026</span><div class="tbody"><h4>Drop 01 — the goal</h4><p>The plan: KARBON &amp; KLOUD land, each as a hoodie, tee and sweatpants. No restocks — once they're gone, they rest.</p></div></div>
+        <div class="trow"><span class="tdot"></span><span class="tdate mono">Now</span><div class="tbody"><h4>Drop 01 — open</h4><p>KARBON &amp; KLOUD are here, each as a hoodie, tee and sweatpants. Made to order, shipped worldwide. No restocks — once a piece rests, it rests.</p></div></div>
         <div class="trow"><span class="tdot"></span><span class="tdate mono">2027</span><div class="tbody"><h4>Drop 02 — on the horizon</h4><p>The next chapter, still to come. The list hears it first.</p></div></div>
       </div>
     </section>
@@ -591,7 +599,7 @@
     <!-- ================= CONTACT ================= -->
     <section class="contact wrap" id="contact">
       <div class="lead mono reveal">Let's dress the new era</div>
-      <a class="email" href="mailto:kalmera.team@gmail.com?subject=Join%20the%20list&body=Add%20me%20to%20the%20KALMERA%20list%20%E2%80%94%20I%20want%20to%20hear%20when%20Drop%2001%20lands." data-cursor="visit">
+      <a class="email" href="mailto:kalmera.team@gmail.com?subject=Join%20the%20list&body=Add%20me%20to%20the%20KALMERA%20list%20%E2%80%94%20I%20want%20to%20hear%20what%20lands%20next." data-cursor="visit">
         <span class="u" data-email>join the list</span>
       </a>
       <br>
@@ -619,13 +627,14 @@
         <div class="po-num mono" id="poNum"></div>
         <h2 class="po-title" id="poTitle"></h2>
         <div class="po-sub" id="poSub"></div>
+        <div class="po-priceline"><span class="po-price" id="poPrice"></span><span class="po-avail mono" id="poAvail">Available now · made to order</span></div>
         <div class="po-hero" id="poHero"><span id="poHeroLabel"></span><span class="ph-tag mono">Product image</span></div>
+        <button class="po-cta" id="poBuy"><span class="u" data-cta>add to basket →</span></button>
+        <div class="po-delivery mono" id="poDelivery" style="margin-top:14px;font-size:0.78rem;color:var(--muted);line-height:1.6;">Made to order · Free standard shipping (~30 days) or Express (~10 days) at checkout.</div>
         <div class="po-gallery" id="poGallery"></div>
         <div class="po-desc" id="poDesc"></div>
         <div class="po-specs" id="poSpecs"></div>
         <details class="po-sizeguide" id="poSizeGuide"><summary>Size guide</summary><div id="poSizeBody"></div></details>
-        <div class="po-delivery mono" id="poDelivery" style="margin-top:20px;font-size:0.78rem;color:var(--muted);line-height:1.6;">Made to order · Free standard shipping (~30 days) or Express (~10 days) at checkout.</div>
-        <button class="po-cta" id="poBuy"><span class="u" data-cta>add to basket →</span></button>
       </div>
     </div>
   </div>
@@ -673,7 +682,7 @@
         </div>
 
         <button class="co-pay" id="coPay">Pay —</button>
-        <div class="co-note">Made to order — printed by hand once you order, then shipped worldwide. Allow time for production ahead of the drop.</div>
+        <div class="co-note">Made to order — printed by hand once you order, then shipped worldwide. Allow a little time for production.</div>
         <div class="co-secure mono">🔒 Payments secured by Stripe · KALMERA never sees your card details</div>
       </div>
     </div>
@@ -740,7 +749,7 @@
           const swellDepth = ctx.createGain(); swellDepth.gain.value = 0.28;
           swellLfo.connect(swellDepth); swellDepth.connect(swell.gain); swellLfo.start();
 
-          const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 340; lp. Q.value = 1.4; lp.connect(swell);
+          const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 340; lp.Q.value = 1.4; lp.connect(swell);
           const fLfo = ctx.createOscillator(); fLfo.type = "sine"; fLfo.frequency.value = 0.045;
           const fDepth = ctx.createGain(); fDepth.gain.value = 220; fLfo.connect(fDepth); fDepth.connect(lp.frequency); fLfo.start();
 
@@ -797,7 +806,7 @@
           if (!unlocked) return;
           const t = ctx.currentTime;
           const n = ctx.createBufferSource(); n.buffer = noiseBuf;
-          const nbp = ctx.createBiquadFilter(); nbp.type = "bandpass"; nbp.frequency.value = 3100; nbp.Q.value = 1.1;
+          const nbp = ctx.createBiquadFilter(); nbp.type = "bandpass"; nbp.frequency.value = 3100; nbp. Q.value = 1.1;
           const ng = ctx.createGain(); ng.gain.setValueAtTime(0.13, t); ng.gain.exponentialRampToValueAtTime(0.0004, t + 0.022);
           n.connect(nbp); nbp.connect(ng); ng.connect(fxBus); n.start(t); n.stop(t + 0.035);
         }
@@ -1144,64 +1153,64 @@
          ============================================================ */
       const PRODUCTS = {
         "karbon-hoodie": {
-          num: "KARBON / 01", title: "Mass", sub: "Hoodie · KARBON Black · Drop 01", color: "#1a1712",
+          num: "KARBON / 01", title: "Mass", sub: "Hoodie · KARBON Black · Available now", color: "#1a1712",
           hero: "KARBON MASS", gallery: ["Front", "Back", "Detail", "Hood"],
           images: ["images/karbon-mass-hero.png","images/karbon-mass-1.png","images/karbon-mass-2.png","images/karbon-mass-3.png","images/karbon-mass-4.png"],
           desc: [
             "The anchor of the drop. Built on a 500 g/m² heavyweight fleece — dense, structured, and substantial in the hand. Made to hold its shape and be worn for years, not seasons.",
             "Oversized fit, plush brushed interior, clean considered exterior. The KALMERA mark sits centred on the chest, printed to order. Made when you order it, shipped worldwide — nothing wasted."
           ],
-          specs: [["Colour","Black"],["Weight","500 g/m² · 14.7 oz"],["Fabric","Heavyweight fleece"],["Fit","Oversized"],["Mark","Centre chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£50 · free shipping"],["Drop","01 — Oct 2026"]]
+          specs: [["Colour","Black"],["Weight","500 g/m² · 14.7 oz"],["Fabric","Heavyweight fleece"],["Fit","Oversized"],["Mark","Centre chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£50 · free shipping"],["Availability","Available now"]]
         },
         "karbon-tee": {
-          num: "KARBON / 02", title: "Base", sub: "Tee · KARBON Black · Drop 01", color: "#1a1712",
+          num: "KARBON / 02", title: "Base", sub: "Tee · KARBON Black · Available now", color: "#1a1712",
           hero: "KARBON BASE", gallery: ["Front", "Back", "Detail", "Collar"],
           images: ["images/karbon-base-hero.png","images/karbon-base-1.png","images/karbon-base-2.png","images/karbon-base-3.png","images/karbon-base-4.png"],
           desc: [
             "The everyday half of KARBON. A boxy, oversized tee at a genuine 400 g/m² — heavyweight for a tee, with real structure and a clean drape.",
             "A small KALMERA mark on the left chest, printed to order. Shipped worldwide. Built to sit right and last."
           ],
-          specs: [["Colour","Black"],["Weight","400 g/m² · 11.8 oz"],["Fabric","Heavyweight cotton"],["Fit","Boxy oversized"],["Mark","Left chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£30 · free shipping"],["Drop","01 — Oct 2026"]]
+          specs: [["Colour","Black"],["Weight","400 g/m² · 11.8 oz"],["Fabric","Heavyweight cotton"],["Fit","Boxy oversized"],["Mark","Left chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£30 · free shipping"],["Availability","Available now"]]
         },
         "karbon-sweatpants": {
-          num: "KARBON / 03", title: "Drift", sub: "Sweatpants · KARBON Black · Drop 01", color: "#1a1712",
+          num: "KARBON / 03", title: "Drift", sub: "Sweatpants · KARBON Black · Available now", color: "#1a1712",
           hero: "KARBON DRIFT", gallery: ["Front", "Back", "Detail", "Waistband"],
           images: ["images/karbon-drift-hero.png","images/karbon-drift-1.png","images/karbon-drift-2.png","images/karbon-drift-3.png","images/karbon-drift-4.png"],
           desc: [
             "The match to the hoodie. Heavyweight 420 g/m² sweatpants with a straight-leg cut — a touch lighter than the hoodie by design, so they move.",
             "The KALMERA mark runs vertically down the lower leg, printed to order. Shipped worldwide. The full KARBON set, head to toe."
           ],
-          specs: [["Colour","Black"],["Weight","420 g/m² · 12.4 oz"],["Fabric","Heavyweight"],["Fit","Straight leg"],["Mark","Vertical, lower leg"],["Sizes","S–XL"],["Made","To order · ships worldwide"],["Price","£40 · free shipping"],["Drop","01 — Oct 2026"]]
+          specs: [["Colour","Black"],["Weight","420 g/m² · 12.4 oz"],["Fabric","Heavyweight"],["Fit","Straight leg"],["Mark","Vertical, lower leg"],["Sizes","S–XL"],["Made","To order · ships worldwide"],["Price","£40 · free shipping"],["Availability","Available now"]]
         },
         "kloud-hoodie": {
-          num: "KLOUD / 01", title: "Mass", sub: "Hoodie · KLOUD White · Drop 01", color: "#8a8175",
+          num: "KLOUD / 01", title: "Mass", sub: "Hoodie · KLOUD White · Available now", color: "#8a8175",
           hero: "KLOUD MASS", gallery: ["Front", "Back", "Detail", "Hood"],
           images: ["images/kloud-mass-hero.png","images/kloud-mass-1.png","images/kloud-mass-2.png","images/kloud-mass-3.png","images/kloud-mass-4.png"],
           desc: [
             "The counterpoint. The same 500 g/m² heavyweight fleece and oversized cut as KARBON, in its lighter register — the substantial feel of a proper premium hoodie.",
             "Plush brushed interior, considered exterior, KALMERA mark centred on the chest and printed to order. Made when you order it, shipped worldwide."
           ],
-          specs: [["Colour","White"],["Weight","500 g/m² · 14.7 oz"],["Fabric","Heavyweight fleece"],["Fit","Oversized"],["Mark","Centre chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£50 · free shipping"],["Drop","01 — Oct 2026"]]
+          specs: [["Colour","White"],["Weight","500 g/m² · 14.7 oz"],["Fabric","Heavyweight fleece"],["Fit","Oversized"],["Mark","Centre chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£50 · free shipping"],["Availability","Available now"]]
         },
         "kloud-tee": {
-          num: "KLOUD / 02", title: "Base", sub: "Tee · KLOUD White · Drop 01", color: "#8a8175",
+          num: "KLOUD / 02", title: "Base", sub: "Tee · KLOUD White · Available now", color: "#8a8175",
           hero: "KLOUD BASE", gallery: ["Front", "Back", "Detail", "Collar"],
           images: ["images/kloud-base-hero.png","images/kloud-base-1.png","images/kloud-base-2.png","images/kloud-base-3.png","images/kloud-base-4.png"],
           desc: [
             "The everyday half of KLOUD. A boxy, oversized 400 g/m² tee in the lighter register — clean, structured, and built to be worn on repeat.",
             "A small KALMERA mark on the left chest, printed to order. Shipped worldwide."
           ],
-          specs: [["Colour","White"],["Weight","400 g/m² · 11.8 oz"],["Fabric","Heavyweight cotton"],["Fit","Boxy oversized"],["Mark","Left chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£30 · free shipping"],["Drop","01 — Oct 2026"]]
+          specs: [["Colour","White"],["Weight","400 g/m² · 11.8 oz"],["Fabric","Heavyweight cotton"],["Fit","Boxy oversized"],["Mark","Left chest"],["Sizes","S–2XL"],["Made","To order · ships worldwide"],["Price","£30 · free shipping"],["Availability","Available now"]]
         },
         "kloud-sweatpants": {
-          num: "KLOUD / 03", title: "Drift", sub: "Sweatpants · KLOUD White · Drop 01", color: "#8a8175",
+          num: "KLOUD / 03", title: "Drift", sub: "Sweatpants · KLOUD White · Available now", color: "#8a8175",
           hero: "KLOUD DRIFT", gallery: ["Front", "Back", "Detail", "Waistband"],
           images: ["images/kloud-drift-hero.png","images/kloud-drift-1.png","images/kloud-drift-2.png","images/kloud-drift-3.png","images/kloud-drift-4.png"],
           desc: [
             "The match to the KLOUD hoodie. Heavyweight 420 g/m² straight-leg sweatpants in the lighter register — the full KLOUD set, head to toe.",
             "The KALMERA mark runs vertically down the lower leg, printed to order. Shipped worldwide."
           ],
-          specs: [["Colour","White"],["Weight","420 g/m² · 12.4 oz"],["Fabric","Heavyweight"],["Fit","Straight leg"],["Mark","Vertical, lower leg"],["Sizes","S–XL"],["Made","To order · ships worldwide"],["Price","£40 · free shipping"],["Drop","01 — Oct 2026"]]
+          specs: [["Colour","White"],["Weight","420 g/m² · 12.4 oz"],["Fabric","Heavyweight"],["Fit","Straight leg"],["Mark","Vertical, lower leg"],["Sizes","S–XL"],["Made","To order · ships worldwide"],["Price","£40 · free shipping"],["Availability","Available now"]]
         }
       };
 
@@ -1233,6 +1242,7 @@
       const poHero = document.getElementById("poHero"), poHeroLabel = document.getElementById("poHeroLabel");
       const poGallery = document.getElementById("poGallery"), poDesc = document.getElementById("poDesc"), poSpecs = document.getElementById("poSpecs");
       const poSizeBody = document.getElementById("poSizeBody");
+      const poPrice = document.getElementById("poPrice");
       const panel = po.querySelector(".po-panel");
       let currentKey = null;
 
@@ -1255,6 +1265,8 @@
         poTitle.textContent = d.title;
         poSub.textContent = tx.sub || d.sub;
         poHeroLabel.textContent = d.hero;
+        // price pulled from the spec sheet so it can never drift out of sync
+        poPrice.textContent = money(unitPrice(key));
         const imgs = d.images || [];
         // HERO — gradient + label always present; layer the photo on top if it exists.
         // If the file 404s, remove the img and the gradient/label shows through.
@@ -1297,7 +1309,7 @@
         panel.scrollTop = 0;
         Sound.open();
         if (!reduce) {
-          const items = panel.querySelectorAll(".po-num, .po-title, .po-sub, .po-hero, .po-gallery, .po-desc, .po-specs, .po-cta");
+          const items = panel.querySelectorAll(".po-num, .po-title, .po-sub, .po-priceline, .po-hero, .po-cta, .po-gallery, .po-desc, .po-specs");
           gsap.fromTo(items, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.06, delay: 0.25 });
         }
       }
@@ -1310,6 +1322,24 @@
 
       document.querySelectorAll(".rel-item[data-product]").forEach(item => {
         item.addEventListener("click", (e) => { e.stopPropagation(); openProduct(item.getAttribute("data-product")); });
+      });
+
+      /* Thumbnails on the release rows so the pieces are visible without opening a panel.
+         Gradient sits underneath, so a missing photo still looks deliberate. */
+      document.querySelectorAll(".rel-item[data-product]").forEach(item => {
+        const d = PRODUCTS[item.getAttribute("data-product")];
+        if (!d) return;
+        const thumb = document.createElement("div");
+        thumb.className = "ri-thumb";
+        thumb.style.background = `linear-gradient(150deg, ${d.color}, #05040a)`;
+        const src = (d.images || [])[0];
+        if (src) {
+          const im = new Image();
+          im.src = src; im.alt = d.hero;
+          im.onerror = () => im.remove();
+          thumb.appendChild(im);
+        }
+        item.insertBefore(thumb, item.firstChild);
       });
       document.querySelectorAll("[data-po-close]").forEach(el => el.addEventListener("click", closeProduct));
       document.addEventListener("keydown", e => { if (e.key === "Escape") closeProduct(); });
