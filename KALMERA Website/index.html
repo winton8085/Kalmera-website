@@ -332,7 +332,7 @@
   .po .po-cta:hover { color: var(--accent-2); }
 
   /* ============================================================
-     CHECKOUT PANEL
+     CHECKOUT PANEL (UI shell — Stripe wiring added later)
      ============================================================ */
   .co { position: fixed; inset: 0; z-index: 130; visibility: hidden; }
   .co.open { visibility: visible; }
@@ -380,7 +380,7 @@
   .co .co-qty button:hover { background: var(--line); }
   .co .co-qty .qv { width: 32px; text-align: center; font-weight: 600; font-size: 0.82rem; }
 
-  /* card field note */
+  /* card field placeholder (Stripe Elements mounts here later) */
   .co .co-card-slot { background: var(--paper-2); border: 1px dashed var(--line); border-radius: 6px; padding: 16px 14px;
     font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 10px; }
   .co .co-card-slot .lock { color: var(--accent); }
@@ -448,7 +448,10 @@
         <option value="pt">PT</option>
         <option value="ja">日本語</option>
         <option value="ko">한국어</option>
+        <option value="zh">中文</option>
+        <option value="tr">Türkçe</option>
         <option value="ar">العربية</option>
+        <option value="fa">فارسی</option>
       </select>
       <button class="cart-btn mono" id="cartBtn" aria-label="Open basket">
         <span class="cart-ico">▤</span><span>Basket</span>
@@ -639,7 +642,7 @@
     </div>
   </div>
 
-  <!-- ================= CHECKOUT PANEL ================= -->
+  <!-- ================= CHECKOUT PANEL (UI shell) ================= -->
   <div class="co" id="co" aria-hidden="true">
     <div class="co-bg" data-co-close></div>
     <div class="co-panel">
@@ -687,6 +690,7 @@
       </div>
     </div>
   </div>
+
   <!-- translations: must load BEFORE the main script so text is swapped before it gets split for animation -->
   <script src="i18n.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
@@ -806,7 +810,7 @@
           if (!unlocked) return;
           const t = ctx.currentTime;
           const n = ctx.createBufferSource(); n.buffer = noiseBuf;
-          const nbp = ctx.createBiquadFilter(); nbp.type = "bandpass"; nbp.frequency.value = 3100; nbp. Q.value = 1.1;
+          const nbp = ctx.createBiquadFilter(); nbp.type = "bandpass"; nbp.frequency.value = 3100; nbp.Q.value = 1.1;
           const ng = ctx.createGain(); ng.gain.setValueAtTime(0.13, t); ng.gain.exponentialRampToValueAtTime(0.0004, t + 0.022);
           n.connect(nbp); nbp.connect(ng); ng.connect(fxBus); n.start(t); n.stop(t + 0.035);
         }
@@ -985,7 +989,6 @@
         });
         gsap.utils.toArray(".releases > .folder").forEach(f => gsap.fromTo(f, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out",
           scrollTrigger: { trigger: f, start: "top 90%", onStart: () => Sound.rowTap() } }));
-
         /* FAQ: expand/collapse accordion */
         gsap.utils.toArray("[data-faq]").forEach(item => {
           const q = item.querySelector(".faq-q");
@@ -1345,7 +1348,7 @@
       document.addEventListener("keydown", e => { if (e.key === "Escape") closeProduct(); });
 
       /* ============================================================
-         BASKET + CHECKOUT
+         BASKET + CHECKOUT (UI shell) — real Stripe payment wired later.
          basket = [{ key, size, qty }]. Prices/sizes read from PRODUCTS
          spec sheets so everything stays in sync automatically.
          ============================================================ */
